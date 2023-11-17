@@ -12,39 +12,39 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import ejercicios.dto.Users;
-import ejercicios.service.IUsersService;
-import ejercicios.service.UsersServiceImpl;
+import ejercicios.dto.User;
+import ejercicios.service.IUserService;
+import ejercicios.service.UserServiceImpl;
 
 @RestController
 @RequestMapping("/user")
-public class UsersController {
+public class UserController {
 	
 	@Autowired
-	private UsersServiceImpl userService;
+	private UserServiceImpl userService;
 
 	@GetMapping
-	public List<Users> getAllUsers(){
+	public List<User> getAllUsers(){
 		
 		return userService.getUsers();
 	}
 	
 	@GetMapping("/{id}")
-	public Users userPerId(@PathVariable Long id) {
+	public User userPerId(@PathVariable Long id) {
 		
 		return userService.userPerId(id);
 	}
 	
 	@PostMapping("/add")
-	public Users insertUser(@RequestBody Users user) {
+	public User insertUser(@RequestBody User user) {
 		
 		return userService.updateUser(user);
 	}
 	
 	@PutMapping("/{id}")
-	public Users updateUser(@PathVariable(name = "id") Long id, @RequestBody Users user) {
+	public User updateUser(@PathVariable(name = "id") Long id, @RequestBody User user) {
 		
-		Users userSelected = new Users();
+		User userSelected = new User();
 		
 		userSelected.setUsername(user.getUsername());
 		userSelected.setUserPassword(user.getUserPassword());

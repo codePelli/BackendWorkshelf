@@ -11,7 +11,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "users")
-public class Users {
+public class User {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,14 +32,14 @@ public class Users {
 
 	@ManyToOne
 	@JoinColumn(name = "editorial_id")
-	private Editorials editorials;
+	private Editorial editorials;
 	
-	public Users() {
+	public User() {
 		super();
 	}
 
-	public Users(Long userId, String username, String userRole, String email, String userPassword,
-			Editorials editorials) {
+	public User(Long userId, String username, String userRole, String email, String userPassword,
+			Editorial editorials) {
 		super();
 		this.userId = userId;
 		this.username = username;
@@ -49,11 +49,11 @@ public class Users {
 		this.editorials = editorials;
 	}
 
-	public Editorials getEditorials() {
+	public Editorial getEditorials() {
 		return editorials;
 	}
 
-	public void setEditorials(Editorials editorials) {
+	public void setEditorials(Editorial editorials) {
 		this.editorials = editorials;
 	}
 

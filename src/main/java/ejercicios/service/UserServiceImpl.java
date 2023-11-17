@@ -4,34 +4,34 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import ejercicios.dao.UsersDAO;
-import ejercicios.dto.Users;
+import ejercicios.dao.UserDAO;
+import ejercicios.dto.User;
 
-public class UsersServiceImpl implements IUsersService{
+public class UserServiceImpl implements IUserService{
 
 	@Autowired
-	UsersDAO userDAO;
+	UserDAO userDAO;
 	
 	@Override
-	public List<Users> getUsers() {
+	public List<User> getUsers() {
 		// TODO Auto-generated method stub
 		return userDAO.findAll();
 	}
 
 	@Override
-	public Users userPerId(Long userId) {
+	public User userPerId(Long userId) {
 		// TODO Auto-generated method stub
 		return userDAO.findById(userId).get();
 	}
 
 	@Override
-	public Users saveUser(Users userId) {
+	public User saveUser(User userId) {
 		// TODO Auto-generated method stub
 		return userDAO.save(userId);
 	}
 
 	@Override
-	public Users updateUser(Users userId) {
+	public User updateUser(User userId) {
 		// TODO Auto-generated method stub
 		return userDAO.save(userId);
 	}

@@ -12,7 +12,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "editorials")
-public class Editorials {
+public class Editorial {
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -21,24 +21,24 @@ public class Editorials {
     private String editorialName;
     
     @OneToMany(mappedBy = "editorials")
-    private List<Users> users;
+    private List<User> users;
 
-	public Editorials() {
+	public Editorial() {
 		super();
 	}
 
-	public Editorials(Long id, String editorialName, List<Users> users) {
+	public Editorial(Long id, String editorialName, List<User> users) {
 		super();
 		this.id = id;
 		this.editorialName = editorialName;
 		this.users = users;
 	}
 
-	public List<Users> getUsers() {
+	public List<User> getUsers() {
 		return users;
 	}
 
-	public void setUsers(List<Users> users) {
+	public void setUsers(List<User> users) {
 		this.users = users;
 	}
 

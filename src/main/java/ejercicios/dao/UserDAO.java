@@ -2,8 +2,8 @@ package ejercicios.dao;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import ejercicios.dto.Users;
+import ejercicios.dto.User;
 
-public interface UsersDAO extends JpaRepository<Users,Long>{
+public interface UserDAO extends JpaRepository<User,Long>{
 
 }

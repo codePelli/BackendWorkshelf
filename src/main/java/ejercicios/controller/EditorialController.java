@@ -12,38 +12,38 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import ejercicios.dto.Editorials;
-import ejercicios.service.EditorialsServiceImpl;
+import ejercicios.dto.Editorial;
+import ejercicios.service.EditorialServiceImpl;
 
 @RestController
 @RequestMapping("/editorial")
-public class EditorialsController {
+public class EditorialController {
 
 	@Autowired
-	private EditorialsServiceImpl editorialService;
+	private EditorialServiceImpl editorialService;
 	
 	@GetMapping
-	public List<Editorials> getAllEditorials(){
+	public List<Editorial> getAllEditorials(){
 		
 		return editorialService.getEditorials();
 	}
 	
 	@GetMapping("/{id}")
-	public Editorials editorialPerId(@PathVariable Long id) {
+	public Editorial editorialPerId(@PathVariable Long id) {
 		
 		return editorialService.editorialPerId(id);
 	}
 	
 	@PostMapping("/add")
-	public Editorials insertEditorial(@RequestBody Editorials editorial) {
+	public Editorial insertEditorial(@RequestBody Editorial editorial) {
 		
 		return editorialService.updateEditorial(editorial);
 	}
 	
 	@PutMapping("/{id}")
-	public Editorials updateEditorial(@PathVariable(name = "id") Long id, @RequestBody Editorials editorial) {
+	public Editorial updateEditorial(@PathVariable(name = "id") Long id, @RequestBody Editorial editorial) {
 		
-		Editorials editorialSelected = new Editorials();
+		Editorial editorialSelected = new Editorial();
 		
 		editorialSelected.setEditorialName(editorial.getEditorialName());
 		

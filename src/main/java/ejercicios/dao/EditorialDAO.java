@@ -3,9 +3,9 @@ package ejercicios.dao;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import ejercicios.dto.Editorials;
+import ejercicios.dto.Editorial;
 
 @Repository
-public interface EditorialsDAO extends JpaRepository<Editorials, Long>{
+public interface EditorialDAO extends JpaRepository<Editorial, Long>{
 
 }

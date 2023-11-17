@@ -4,34 +4,34 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import ejercicios.dao.EditorialsDAO;
-import ejercicios.dto.Editorials;
+import ejercicios.dao.EditorialDAO;
+import ejercicios.dto.Editorial;
 
-public class EditorialsServiceImpl implements IEditorialsService{
+public class EditorialServiceImpl implements IEditorialService{
 	
 	@Autowired
-	EditorialsDAO editorialsDAO;
+	EditorialDAO editorialsDAO;
 
 	@Override
-	public List<Editorials> getEditorials() {
+	public List<Editorial> getEditorials() {
 		// TODO Auto-generated method stub
 		return editorialsDAO.findAll();
 	}
 
 	@Override
-	public Editorials editorialPerId(Long id) {
+	public Editorial editorialPerId(Long id) {
 		// TODO Auto-generated method stub
 		return editorialsDAO.findById(id).get();
 	}
 
 	@Override
-	public Editorials saveEditorial(Editorials id) {
+	public Editorial saveEditorial(Editorial id) {
 		// TODO Auto-generated method stub
 		return editorialsDAO.save(id);
 	}
 
 	@Override
-	public Editorials updateEditorial(Editorials id) {
+	public Editorial updateEditorial(Editorial id) {
 		// TODO Auto-generated method stub
 		return editorialsDAO.save(id);
 	}

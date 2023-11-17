@@ -42,20 +42,20 @@ public class BookController {
 		
 		Book bookSelected = new Book();
 		
-		bookSeleccionada= bookService.bookPerId(id);
+		bookSelected= bookService.bookPerId(id);
 		
-		bookSeleccionada.setTitle(book.getTitle());
-		bookSeleccionada.setAuthor(book.getAuthor());
-		bookSeleccionada.setBookingStatus(book.getBookingStatus());
-		bookSeleccionada.setReserved(book.getReserved());
-		bookSeleccionada.setReservationDate(book.getReservationDate());
-		bookSeleccionada.setReservationDuration(book.getReservationDuration());
-		bookSeleccionada.setUser(book.getUser());
-		bookSeleccionada.setEditorial(book.getEditorial());
+		bookSelected.setTitle(book.getTitle());
+		bookSelected.setAuthor(book.getAuthor());
+		bookSelected.setBookingStatus(book.getBookingStatus());
+		bookSelected.setReserved(book.getReserved());
+		bookSelected.setReservationDate(book.getReservationDate());
+		bookSelected.setReservationDuration(book.getReservationDuration());
+		bookSelected.setUser(book.getUser());
+		bookSelected.setEditorial(book.getEditorial());
 		
-		bookSeleccionada = bookService.updateBook(bookSeleccionada);
+		bookSelected = bookService.updateBook(bookSelected);
 		
-		return bookSeleccionada;
+		return bookSelected;
 	}
 	
 	@DeleteMapping("/{id}")

@@ -1,7 +1,5 @@
 package ejercicios.dto;
 
-import java.util.Date;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import ejercicios.user.User;
@@ -14,14 +12,14 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "reservations")
-public class Reservation {
+@Table(name = "ratings")
+public class Rating {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	private Date requestDate;
-	private Date returnDate;
+	private int score;
+	private String comment;
 
 	@ManyToOne
 	@JsonIgnoreProperties("reservations")
@@ -35,15 +33,15 @@ public class Reservation {
 
 
 
-	public Reservation() {
+	public Rating() {
 	}
 
 
 
-	public Reservation(Long id, Date requestDate, Date returnDate, User user, Book book) {
+	public Rating(Long id, int score, String comment, User user, Book book) {
 		this.id = id;
-		this.requestDate = requestDate;
-		this.returnDate = returnDate;
+		this.score = score;
+		this.comment = comment;
 		this.user = user;
 		this.book = book;
 	}
@@ -62,26 +60,26 @@ public class Reservation {
 
 
 
-	public Date getRequestDate() {
-		return requestDate;
+	public int getScore() {
+		return score;
 	}
 
 
 
-	public void setRequestDate(Date requestDate) {
-		this.requestDate = requestDate;
+	public void setScore(int score) {
+		this.score = score;
 	}
 
 
 
-	public Date getReturnDate() {
-		return returnDate;
+	public String getComment() {
+		return comment;
 	}
 
 
 
-	public void setReturnDate(Date returnDate) {
-		this.returnDate = returnDate;
+	public void setComment(String comment) {
+		this.comment = comment;
 	}
 
 
@@ -112,10 +110,12 @@ public class Reservation {
 
 	@Override
 	public String toString() {
-		return "Reservation [id=" + id + ", requestDate=" + requestDate + ", returnDate=" + returnDate + ", user="
-				+ user + ", book=" + book + "]";
+		return "Rating [id=" + id + ", score=" + score + ", comment=" + comment + ", user=" + user + ", book=" + book
+				+ "]";
 	}
+
+
+
 
 	
 }
-

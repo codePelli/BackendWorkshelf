@@ -28,12 +28,12 @@ public class Reservation {
 	private Date returnDate;
 
 	@ManyToOne
-	@JsonIgnoreProperties("reservations")
+	@JsonIgnoreProperties("reservation")
 	@JoinColumn(name = "userId")
 	private User user;
 	
 	@ManyToOne
-	@JsonIgnoreProperties("reservations")
+	@JsonIgnoreProperties("reservation")
 	@JoinColumn(name = "bookId")
 	private Book book;
 

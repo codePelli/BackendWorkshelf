@@ -20,6 +20,7 @@ public class Rating {
 	private int score;
 	private String comment;
 
+	
 	@ManyToOne
 	@JsonIgnoreProperties("reservations")
 	@JoinColumn(name = "userId")

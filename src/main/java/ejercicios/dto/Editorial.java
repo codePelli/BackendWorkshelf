@@ -2,8 +2,12 @@ package ejercicios.dto;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -20,8 +24,11 @@ public class Editorial {
     @Column(name = "editorialName")
     private String editorialName;
     
-    @OneToMany(mappedBy = "editorial")
-    private List<Book> books;
+    
+	@JsonIgnore
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "editorial", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Book> books;
+
 
 	public Editorial() {
 		super();

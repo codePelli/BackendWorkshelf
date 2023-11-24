@@ -1,6 +1,6 @@
 # Workshelf - Book Loan Platform
-Introduction
-## Workshelf is a web platform developed to facilitate book lending and exchange among T-Systems employees. The application aims to promote a reading culture within the organization by allowing users to register, share, and borrow books.
+## Introduction
+Workshelf is a web platform developed to facilitate book lending and exchange among T-Systems employees. The application aims to promote a reading culture within the organization by allowing users to register, share, and borrow books.
 
 ## Technologies Used
 ### Backend (Spring Framework):
@@ -56,11 +56,11 @@ Users can make their books available for reservation.
 - Search Functionality:
 Users can search for books based on title, author, or ISBN.
 
--User Interaction:
+- User Interaction:
 Users can view the contact details of book owners.
 Registered users can log out of the web application.
 
--Book Rating and Comments:
+- Book Rating and Comments:
 Registered users can rate and comment on the books they have reserved.
 
 ## Project Links

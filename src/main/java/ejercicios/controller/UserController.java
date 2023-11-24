@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import ejercicios.dto.User;
-import ejercicios.service.IUserService;
 import ejercicios.service.UserServiceImpl;
 
 @RestController

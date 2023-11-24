@@ -1,5 +1,7 @@
 package ejercicios.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -29,10 +31,12 @@ public class User {
 	 
 	@Column(name = "userPassword")
 	private String userPassword; 
-
+	
 	@ManyToOne
-	@JoinColumn(name = "editorial_id")
-	private Editorial editorials;
+	@JsonIgnoreProperties("roles")
+	@JoinColumn(name = "roleId")
+	private Role role;
+	
 	
 	public User() {
 		super();
@@ -46,16 +50,8 @@ public class User {
 		this.userRole = userRole;
 		this.email = email;
 		this.userPassword = userPassword;
-		this.editorials = editorials;
 	}
 
-	public Editorial getEditorials() {
-		return editorials;
-	}
-
-	public void setEditorials(Editorial editorials) {
-		this.editorials = editorials;
-	}
 
 	public Long getUserId() {
 		return userId;

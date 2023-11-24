@@ -6,7 +6,6 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import ejercicios.user.User;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -39,9 +38,8 @@ public class Book {
 	
 	@ManyToOne
 	@JsonIgnoreProperties("book")
-	@JoinColumn(name = "editorial_id")
+	@JoinColumn(name = "editorialName")
 	private Editorial editorial;
-
 	
 	@JsonIgnore
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true)

@@ -20,26 +20,26 @@ public class Editorial {
     @Column(name = "editorialName")
     private String editorialName;
     
-    @OneToMany(mappedBy = "editorials")
-    private List<User> users;
+    @OneToMany(mappedBy = "editorial")
+    private List<Book> books;
 
 	public Editorial() {
 		super();
 	}
 
-	public Editorial(Long id, String editorialName, List<User> users) {
+	public Editorial(Long id, String editorialName, List<Book> books) {
 		super();
 		this.id = id;
 		this.editorialName = editorialName;
-		this.users = users;
+		this.books = books;
 	}
 
-	public List<User> getUsers() {
-		return users;
+	public List<Book> getBooks() {
+		return books;
 	}
 
-	public void setUsers(List<User> users) {
-		this.users = users;
+	public void setBooks(List<Book> books) {
+		this.books = books;
 	}
 
 	public Long getId() {

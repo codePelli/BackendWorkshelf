@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import ejercicios.dto.Editorial;
 
-
 public interface IEditorialService {
 
 	List<Editorial> getEditorials();

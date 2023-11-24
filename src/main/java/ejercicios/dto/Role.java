@@ -15,38 +15,38 @@ import jakarta.persistence.Table;
 public class Role {
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long roleId;
 	
     @Column(name = "roleName")
     private String roleName;
     
-    @OneToMany(mappedBy = "roles")
+    @OneToMany(mappedBy = "role")
     private List<User> users;
 
 	public Role() {
 	}
 
-	public Role(Long id, String rolName, List<User> users) {
+	public Role(Long roleId, String roleName, List<User> users) {
 		super();
-		this.id = id;
-		this.roleName = rolName;
+		this.roleId = roleId;
+		this.roleName = roleName;
 		this.users = users;
 	}
 
 	public Long getId() {
-		return id;
+		return roleId;
 	}
 
 	public void setId(Long id) {
-		this.id = id;
+		this.roleId = id;
 	}
 
 	public String getRoleName() {
 		return roleName;
 	}
 
-	public void setRoleName(String rolName) {
-		this.roleName = rolName;
+	public void setRoleName(String roleName) {
+		this.roleName = roleName;
 	}
 
 	public List<User> getUsers() {

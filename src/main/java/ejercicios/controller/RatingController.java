@@ -50,7 +50,7 @@ public class RatingController {
 		RatingSelected.setComment(Rating.getComment());
 		RatingSelected.setScore(Rating.getScore());
 		RatingSelected.setUser(Rating.getUser());
-		RatingSelected.setBook(Rating.getBook());
+		RatingSelected.setReservation(Rating.getReservation());
 		
 		RatingSelected = RatingService.updateRating(RatingSelected);
 		

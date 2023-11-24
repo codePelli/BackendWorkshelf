@@ -2,7 +2,6 @@ package ejercicios.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import ejercicios.user.User;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -28,8 +27,8 @@ public class Rating {
 	
 	@ManyToOne
 	@JsonIgnoreProperties("reservations")
-	@JoinColumn(name = "bookId")
-	private Book book;
+	@JoinColumn(name = "reservationId")
+	private Reservation reservation;
 
 
 
@@ -38,12 +37,12 @@ public class Rating {
 
 
 
-	public Rating(Long id, int score, String comment, User user, Book book) {
+	public Rating(Long id, int score, String comment, User user, Reservation reservation) {
 		this.id = id;
 		this.score = score;
 		this.comment = comment;
 		this.user = user;
-		this.book = book;
+		this.reservation = reservation;
 	}
 
 
@@ -96,21 +95,21 @@ public class Rating {
 
 
 
-	public Book getBook() {
-		return book;
+	public Reservation getReservation() {
+		return reservation;
 	}
 
 
 
-	public void setBook(Book book) {
-		this.book = book;
+	public void setReservation(Reservation reservation) {
+		this.reservation = reservation;
 	}
 
 
 
 	@Override
 	public String toString() {
-		return "Rating [id=" + id + ", score=" + score + ", comment=" + comment + ", user=" + user + ", book=" + book
+		return "Rating [id=" + id + ", score=" + score + ", comment=" + comment + ", user=" + user + ", reservation=" + reservation
 				+ "]";
 	}
 

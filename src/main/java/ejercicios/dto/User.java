@@ -32,6 +32,7 @@ public class User {
 	@Column(name = "userPassword")
 	private String userPassword; 
 	
+	
 	@ManyToOne
 	@JsonIgnoreProperties("users")
 	@JoinColumn(name = "roleId")

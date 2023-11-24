@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -23,6 +24,7 @@ public class Book {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name="bookId")
 	private Long id;
 	private String title;
 	private String author;
@@ -33,7 +35,7 @@ public class Book {
 
 	@ManyToOne
 	@JsonIgnoreProperties("book")
-	@JoinColumn(name = "user_id")
+	@JoinColumn(name = "ownerId")
 	private User user;
 	
 	@ManyToOne

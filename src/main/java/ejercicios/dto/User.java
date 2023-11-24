@@ -33,7 +33,7 @@ public class User {
 	private String userPassword; 
 	
 	@ManyToOne
-	@JsonIgnoreProperties("roles")
+	@JsonIgnoreProperties("users")
 	@JoinColumn(name = "roleId")
 	private Role role;
 	

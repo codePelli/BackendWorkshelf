@@ -3,10 +3,11 @@ package ejercicios.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import ejercicios.dao.RoleDAO;
 import ejercicios.dto.Role;
-
+@Service
 public class RoleServiceImpl implements IRoleService{
 	
 	@Autowired

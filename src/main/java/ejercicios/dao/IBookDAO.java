@@ -7,5 +7,5 @@ import ejercicios.dto.Book;
 
 @Repository
 public interface IBookDAO  extends JpaRepository<Book, Long> {
-
+	Book findByTitle(String title);
 }

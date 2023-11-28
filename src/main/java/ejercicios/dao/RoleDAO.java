@@ -7,5 +7,5 @@ import ejercicios.dto.Role;
 
 @Repository
 public interface RoleDAO extends JpaRepository<Role, Long>{
-
+	Role findByRoleName(String roleName);
 }

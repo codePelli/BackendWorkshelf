@@ -54,5 +54,10 @@ public class EditorialController {
 	public void deleteEditorial(@PathVariable Long id) {
 		editorialService.deleteEditorial(id);
 	}
+	
+	@GetMapping("/byName/{name}")
+    public Editorial getByName(@PathVariable(name = "name") String name) {
+        return editorialService.editorialByName(name);
+    }
 }
 

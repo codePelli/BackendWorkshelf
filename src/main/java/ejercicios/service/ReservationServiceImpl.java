@@ -1,5 +1,6 @@
 package ejercicios.service;
 
+import java.util.Date;
 import java.util.List;
 
 
@@ -43,6 +44,10 @@ public class ReservationServiceImpl implements IReservationService{
 		// TODO Auto-generated method stub
 		ReservationsDAO.deleteById(id);
 	}
+	
+	public List<Reservation> reservationsByReturnDate(Date returnDate) {
+        return ReservationsDAO.findAllByReturnDate(returnDate);
+    }
 
 }
 

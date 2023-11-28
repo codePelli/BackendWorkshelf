@@ -15,5 +15,6 @@ public interface IRatingService {
 	public Rating updateRating(Rating Rating);
 
 	public void deleteRating(Long id);
-
+	
+	public List<Rating> ratingsByScore(int score);
 }

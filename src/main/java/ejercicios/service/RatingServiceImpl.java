@@ -42,6 +42,10 @@ public class RatingServiceImpl implements IRatingService{
 		// TODO Auto-generated method stub
 		RatingsDAO.deleteById(id);
 	}
+	
+	public List<Rating> ratingsByScore(int score) {
+        return RatingsDAO.findAllByScore(score);
+    }
 
 }
 

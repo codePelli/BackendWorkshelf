@@ -61,4 +61,9 @@ public class RatingController {
 	public void deleteRating(@PathVariable Long id) {
 		RatingService.deleteRating(id);
 	}
+	
+	@GetMapping("/byScore/{score}")
+    public List<Rating> getByScore(@PathVariable(name = "score") int score) {
+        return RatingService.ratingsByScore(score);
+    }
 }

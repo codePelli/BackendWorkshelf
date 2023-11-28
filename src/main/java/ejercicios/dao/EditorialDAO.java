@@ -7,5 +7,5 @@ import ejercicios.dto.Editorial;
 
 @Repository
 public interface EditorialDAO extends JpaRepository<Editorial, Long>{
-
+	Editorial findByEditorialName(String editorialName);
 }

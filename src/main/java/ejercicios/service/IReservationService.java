@@ -1,5 +1,6 @@
 package ejercicios.service;
 
+import java.util.Date;
 import java.util.List;
 
 import ejercicios.dto.Reservation;
@@ -15,5 +16,7 @@ public interface IReservationService {
 	public Reservation updateReservation(Reservation Reservation);
 
 	public void deleteReservation(Long id);
+	
+	public List<Reservation> reservationsByReturnDate(Date returnDate);
 
 }

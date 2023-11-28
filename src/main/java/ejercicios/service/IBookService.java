@@ -15,5 +15,7 @@ public interface IBookService {
 	public Book updateBook(Book book);
 
 	public void deleteBook(Long id);
+	
+	public Book bookPerName(String name);
 
 }

@@ -33,4 +33,8 @@ public class BookServiceImpl {
 	public void deleteBook(Long id) {
 		bookDAO.deleteById(id);
 	}
+	
+	public Book bookPerName(String name) {
+        return bookDAO.findByTitle(name);
+    }
 }

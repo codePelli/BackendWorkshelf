@@ -3,6 +3,8 @@ package ejercicios.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import ejercicios.dao.RatingDAO;
@@ -46,6 +48,12 @@ public class RatingServiceImpl implements IRatingService{
 	public List<Rating> ratingsByScore(int score) {
         return RatingsDAO.findAllByScore(score);
     }
+
+	@Override
+	public Page<Rating> getPaginatedRating(Pageable pageable) {
+		// TODO Auto-generated method stub
+		return RatingsDAO.findAll(pageable);
+	}
 
 }
 

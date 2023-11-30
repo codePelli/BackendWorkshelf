@@ -2,6 +2,8 @@ package ejercicios.service;
 
 import java.util.List;
 
+import org.springframework.data.domain.*;
+
 import ejercicios.dto.User;
 
 public interface IUserService {
@@ -17,4 +19,6 @@ public interface IUserService {
 	void deleteUser(Long userId);
 
 	User userByUsername(String username);
+	
+    Page<User> getPaginatedProyectos(Pageable pageable);
 }

@@ -3,13 +3,15 @@ package ejercicios.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import ejercicios.dao.IBookDAO;
 import ejercicios.dto.Book;
 
 @Service
-public class BookServiceImpl {
+public class BookServiceImpl implements IBookService{
 
 	@Autowired
 	IBookDAO bookDAO;
@@ -37,4 +39,10 @@ public class BookServiceImpl {
 	public Book bookPerName(String name) {
         return bookDAO.findByTitle(name);
     }
+
+	@Override
+	public Page<Book> getPaginatedBook(Pageable pageable) {
+		// TODO Auto-generated method stub
+		return bookDAO.findAll(pageable);
+	}
 }

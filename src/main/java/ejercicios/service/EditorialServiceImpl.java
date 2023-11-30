@@ -42,5 +42,9 @@ public class EditorialServiceImpl implements IEditorialService{
 		// TODO Auto-generated method stub
 		editorialsDAO.deleteById(id);
 	}
+	
+	public Editorial editorialByName(String name) {
+        return editorialsDAO.findByEditorialName(name); // Assuming findByEditorialName method exists in IEditorialDAO
+    }
 
 }

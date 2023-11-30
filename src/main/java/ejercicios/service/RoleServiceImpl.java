@@ -1,5 +1,6 @@
 package ejercicios.service;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import ejercicios.dao.RoleDAO;
 import ejercicios.dto.Role;
+import ejercicios.dto.User;
 @Service
 public class RoleServiceImpl implements IRoleService{
 	
@@ -42,5 +44,12 @@ public class RoleServiceImpl implements IRoleService{
 		// TODO Auto-generated method stub
 		RolesDAO.deleteById(id);
 	}
-
+	
+	public List<User> getUsersByRoleName(String roleName) {
+        Role role = RolesDAO.findByRoleName(roleName);
+        if (role != null) {
+            return role.getUsers();
+        }
+        return Collections.emptyList();
+    }
 }

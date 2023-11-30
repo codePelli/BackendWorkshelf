@@ -15,4 +15,6 @@ public interface IEditorialService {
 	Editorial updateEditorial(Editorial id);
 	
 	void deleteEditorial(Long id);
+	
+	public Editorial editorialByName(String name);
 }

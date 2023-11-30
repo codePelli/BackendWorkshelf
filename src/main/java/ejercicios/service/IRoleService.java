@@ -3,6 +3,7 @@ package ejercicios.service;
 import java.util.List;
 
 import ejercicios.dto.Role;
+import ejercicios.dto.User;
 
 public interface IRoleService {
 	
@@ -15,5 +16,6 @@ public interface IRoleService {
 	public Role updateRole(Role Role);
 
 	public void deleteRole(Long id);
-
+	
+	public List<User> getUsersByRoleName(String roleName);
 }

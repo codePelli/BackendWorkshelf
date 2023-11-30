@@ -62,5 +62,11 @@ public class BookController {
 	public void deleteBook(@PathVariable(name="id") Long id) {
 		bookService.deleteBook(id);
 	}
-
+	
+	
+	//Added methods
+	@GetMapping("/byTitle/{title}")
+    public Book getByTitle(@PathVariable(name = "title") String title) {
+        return bookService.bookPerName(title);
+    }
 }

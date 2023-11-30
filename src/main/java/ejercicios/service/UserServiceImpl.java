@@ -42,5 +42,9 @@ public class UserServiceImpl implements IUserService{
 		// TODO Auto-generated method stub
 		userDAO.deleteById(userId);
 	}
+	
+	public User userByUsername(String username) {
+        return userDAO.findByUsername(username);
+    }
 
 }

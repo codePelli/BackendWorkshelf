@@ -2,7 +2,11 @@ package ejercicios.service;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 import ejercicios.dto.Book;
+import ejercicios.dto.Rating;
 
 public interface IBookService {
 	
@@ -17,5 +21,8 @@ public interface IBookService {
 	public void deleteBook(Long id);
 	
 	public Book bookPerName(String name);
+	
+    Page<Book> getPaginatedBook(Pageable pageable);
+
 
 }

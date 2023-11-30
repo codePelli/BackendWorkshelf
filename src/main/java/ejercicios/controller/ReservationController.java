@@ -2,9 +2,14 @@ package ejercicios.controller;
 
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import ejercicios.dto.Reservation;
+import ejercicios.dto.Role;
 import ejercicios.service.ReservationServiceImpl;
 
 @RestController
@@ -68,5 +74,17 @@ public class ReservationController {
 	@GetMapping("/byReturnDate")
     public List<Reservation> getByReturnDate(@RequestParam(name = "returnDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Date returnDate) {
         return ReservationService.reservationsByReturnDate(returnDate);
+    }
+	
+    //GET /api/proyectos/paginated?page=0&size=10
+    @GetMapping("/paginated")
+    public ResponseEntity<List<Reservation>> getPaginatedProyectos(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+
+        Page<Reservation> reservationPage = ReservationService.getPaginatedReservation(PageRequest.of(page, size));
+        List<Reservation> pageDTOs = reservationPage.getContent().stream().collect(Collectors.toList());
+
+        return new ResponseEntity<>(pageDTOs, HttpStatus.OK);
     }
 }

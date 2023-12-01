@@ -13,6 +13,6 @@ import ejercicios.dto.Rating;
 public interface RatingDAO extends JpaRepository<Rating,Long>{
 	List<Rating> findAllByScore(int score);
 	
-	<T> Page<T> findAllByScoreContainingIgnoreCase(int rating, Pageable pageable);
+	<T> Page<T> findAllByScore(Integer rating, Pageable pageable);
 }
 

@@ -56,9 +56,9 @@ public class RatingServiceImpl implements IRatingService{
 		return RatingsDAO.findAll(pageable);
 	}
 	
-	public Page<Rating> searchRatingByScore(int rating, Pageable pageable) {
+	public Page<Rating> searchRatingByScore(Integer rating, Pageable pageable) {
 		// TODO Auto-generated method stub
-		return RatingsDAO.findAllByScoreContainingIgnoreCase(rating, pageable);
+		return RatingsDAO.findAllByScore(rating, pageable);
 	}
 
 }

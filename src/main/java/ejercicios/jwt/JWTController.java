@@ -1,6 +1,8 @@
 package ejercicios.jwt;
 
-import org.json.JSONObject;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -11,11 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import ejercicios.exception.UserNotFoundException;
-
-
-/**
- * @author Samson Effes
- */
 
 
 @RestController
@@ -31,10 +28,14 @@ public class JWTController {
         Authentication authentication = authenticationManager
                 .authenticate(new UsernamePasswordAuthenticationToken(authRequest.getUserName(), authRequest.getPassword()));
         if (authentication.isAuthenticated()){
+        	Map<String, Object> Response = new HashMap <String, Object> ();
             String token =  jwtService.generateToken(authRequest.getUserName());
-            JSONObject jsonObject = new JSONObject("{\"token\": \"" + token + "\"}");
-            jsonObject.put("token",token );
-            return jsonObject.toMap();//devuelve token por body
+            Response.put("token", token);
+            
+            //JSONObject jsonObject = new JSONObject("{\"token\": \"" + token + "\"}");
+            //jsonObject.put("token",token );
+            //return jsonObject.toMap();//devuelve token por body
+            return Response;
         }
         else {
             throw new UserNotFoundException("Invalid user credentials");

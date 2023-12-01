@@ -22,16 +22,13 @@ public class User {
 	 
 	@Column(name = "username")
 	private String username;
-	 
-	@Column(name = "userRole")
-	private String userRole;
 
 	@Column(name = "email", unique = true)
 	private String email;
 	 
 	@Column(name = "userPassword")
-	private String userPassword; 
-	
+	private String password;
+
 	
 	@ManyToOne
 	@JsonIgnoreProperties("users")
@@ -43,16 +40,22 @@ public class User {
 		super();
 	}
 
-	public User(Long userId, String username, String userRole, String email, String userPassword,
+	public User(Long userId, String username, String userRole, String email, String password,
 			Editorial editorials) {
 		super();
 		this.userId = userId;
 		this.username = username;
-		this.userRole = userRole;
 		this.email = email;
-		this.userPassword = userPassword;
+		this.password = password;
 	}
 
+	public Role getRole() {
+		return role;
+	}
+
+	public void setRole(Role role) {
+		this.role = role;
+	}
 
 	public Long getUserId() {
 		return userId;
@@ -70,13 +73,6 @@ public class User {
 		this.username = username;
 	}
 
-	public String getUserRole() {
-		return userRole;
-	}
-
-	public void setUserRole(String userRole) {
-		this.userRole = userRole;
-	}
 
 	public String getEmail() {
 		return email;
@@ -86,12 +82,12 @@ public class User {
 		this.email = email;
 	}
 
-	public String getUserPassword() {
-		return userPassword;
+	public String getPassword() {
+		return password;
 	}
 
-	public void setUserPassword(String userPassword) {
-		this.userPassword = userPassword;
+	public void setPassword(String userPassword) {
+		this.password = userPassword;
 	}
 	 
 }

@@ -10,9 +10,6 @@ import org.springframework.stereotype.Component;
 import ejercicios.dao.UserDAO;
 
 
-/**
- * @author Jose Marin
- */
 
 @Component
 public class LibraryUserDetailsService implements UserDetailsService {

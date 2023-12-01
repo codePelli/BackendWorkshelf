@@ -55,6 +55,11 @@ public class RatingServiceImpl implements IRatingService{
 		// TODO Auto-generated method stub
 		return RatingsDAO.findAll(pageable);
 	}
+	
+	public Page<Rating> searchRatingByScore(int rating, Pageable pageable) {
+		// TODO Auto-generated method stub
+		return RatingsDAO.findAllByScoreContainingIgnoreCase(rating, pageable);
+	}
 
 }
 

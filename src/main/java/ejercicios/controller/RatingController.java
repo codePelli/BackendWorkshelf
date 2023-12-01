@@ -84,4 +84,15 @@ public class RatingController {
 
         return new ResponseEntity<>(pageDTOs, HttpStatus.OK);
     }
+    
+    // GET /rating/byScorePaginated?score=Book&page=1&size=1
+ 	@GetMapping("/byScorePaginated")
+ 	public ResponseEntity<List<Rating>> searchByScore(@RequestParam(name = "score") int score,
+ 			@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
+
+ 		Page<Rating> bookPage = RatingService.searchRatingByScore(score, PageRequest.of(page, size));
+ 		List<Rating> bookDTOs = bookPage.getContent().stream().collect(Collectors.toList());
+
+ 		return new ResponseEntity<>(bookDTOs, HttpStatus.OK);
+ 	}
 }

@@ -79,13 +79,26 @@ public class BookController {
 	
     //GET /api/proyectos/paginated?page=0&size=10
     @GetMapping("/paginated")
-    public ResponseEntity<List<Book>> getPaginatedProyectos(
+    public ResponseEntity<List<Book>> getPaginatedBooks(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
 
         Page<Book> bookPage = bookService.getPaginatedBook(PageRequest.of(page, size));
         List<Book> bookDTOs = bookPage.getContent().stream().collect(Collectors.toList());
 
+        return new ResponseEntity<>(bookDTOs, HttpStatus.OK);
+    }
+    
+  //GET /api/proyectos/paginated?page=0&size=10
+    @GetMapping("/byTitlePaginated")
+    public ResponseEntity<List<Book>> searchByTitle(
+    		@RequestParam(name = "title") String title,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+
+        Page<Book> bookPage = bookService.searchBookByTitle(title,PageRequest.of(page, size));
+        List<Book> bookDTOs = bookPage.getContent().stream().collect(Collectors.toList());
+        
         return new ResponseEntity<>(bookDTOs, HttpStatus.OK);
     }
 

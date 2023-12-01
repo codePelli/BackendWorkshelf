@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import ejercicios.dto.Book;
-import ejercicios.dto.Rating;
 import ejercicios.service.BookServiceImpl;
 
 @RestController

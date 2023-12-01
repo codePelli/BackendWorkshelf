@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import ejercicios.dto.Reservation;
-import ejercicios.dto.Role;
 import ejercicios.service.ReservationServiceImpl;
 
 @RestController

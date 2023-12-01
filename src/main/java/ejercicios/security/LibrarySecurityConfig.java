@@ -19,9 +19,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import ejercicios.jwt.JWTAuthenticationFilter;
 
 
-/**
- * @author Samson Effes
- */
+
 @Configuration
 @EnableWebSecurity
 public class LibrarySecurityConfig {

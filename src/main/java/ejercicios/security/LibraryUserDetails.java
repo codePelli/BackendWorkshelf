@@ -15,9 +15,6 @@ import ejercicios.dto.User;
 
 
 
-/**
- * @author Jose Marin
- */
 public class LibraryUserDetails implements UserDetails {
 
     private String userName;

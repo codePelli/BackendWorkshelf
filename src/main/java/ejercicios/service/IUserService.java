@@ -21,4 +21,6 @@ public interface IUserService {
 	User userByUsername(String username);
 	
     Page<User> getPaginatedProyectos(Pageable pageable);
+
+	User getUser(String email);
 }

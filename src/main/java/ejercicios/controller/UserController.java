@@ -42,8 +42,7 @@ public class UserController {
 	
 	@PostMapping("/add")
 	public User insertUser(@RequestBody User user) {
-		
-		return userService.updateUser(user);
+		return userService.saveUser(user);
 	}
 	
 	@PutMapping("/{id}")
@@ -52,9 +51,9 @@ public class UserController {
 		User userSelected = new User();
 		
 		userSelected.setUsername(user.getUsername());
-		userSelected.setUserPassword(user.getUserPassword());
+		userSelected.setPassword(user.getPassword());
 		userSelected.setEmail(user.getEmail());
-		userSelected.setUserRole(user.getUserRole());
+		userSelected.setRole(user.getRole());
 		
 		return userSelected;
 	}

@@ -58,7 +58,7 @@ public class LibrarySecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        return http.csrf().disable()
+        return http.csrf().and().cors().disable()
                 .authorizeHttpRequests()
                 .requestMatchers(UN_SECURED_URLs).permitAll().and()
                 .authorizeHttpRequests().requestMatchers(SECURED_URLs)

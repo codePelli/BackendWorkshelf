@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import ejercicios.dto.Editorial;
-import ejercicios.dto.User;
 import ejercicios.service.EditorialServiceImpl;
 
 @RestController
@@ -29,7 +28,7 @@ public class EditorialController {
 	@Autowired
 	private EditorialServiceImpl editorialService;
 	
-	@GetMapping
+	@GetMapping()
 	public List<Editorial> getAllEditorials(){
 		
 		return editorialService.getEditorials();
@@ -67,7 +66,7 @@ public class EditorialController {
         return editorialService.editorialByName(name);
     }
 	
-    //GET /api/proyectos/paginated?page=0&size=10
+    //GET /book/paginated?page=0&size=3
     @GetMapping("/paginated")
     public ResponseEntity<List<Editorial>> getPaginatedProyectos(
             @RequestParam(defaultValue = "0") int page,
@@ -78,5 +77,16 @@ public class EditorialController {
 
         return new ResponseEntity<>(userDTOs, HttpStatus.OK);
     }
+    
+    // GET /book/byEditorialName?title=editorial&page=1&size=1
+ 	@GetMapping("/byEditorialName")
+ 	public ResponseEntity<List<Editorial>> searchByeditorialName(@RequestParam(name = "editorial") String title,
+ 			@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
+
+ 		Page<Editorial> bookPage = editorialService.searchEditorialByeditorialName(title, PageRequest.of(page, size));
+ 		List<Editorial> bookDTOs = bookPage.getContent().stream().collect(Collectors.toList());
+
+ 		return new ResponseEntity<>(bookDTOs, HttpStatus.OK);
+ 	}
 }
 

@@ -45,4 +45,9 @@ public class BookServiceImpl implements IBookService{
 		// TODO Auto-generated method stub
 		return bookDAO.findAll(pageable);
 	}
+	
+	public Page<Book> searchBookByTitle(String title, Pageable pageable) {
+		// TODO Auto-generated method stub
+		return bookDAO.findAllByTitleContainingIgnoreCase(title, pageable);
+	}
 }

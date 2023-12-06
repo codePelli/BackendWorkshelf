@@ -55,5 +55,10 @@ public class EditorialServiceImpl implements IEditorialService{
 		// TODO Auto-generated method stub
 		return editorialsDAO.findAll(pageable);
 	}
+	
+	public Page<Editorial> searchEditorialByeditorialName(String title, Pageable pageable) {
+		// TODO Auto-generated method stub
+		return editorialsDAO.findAllByeditorialNameContainingIgnoreCase(title, pageable);
+	}
 
 }

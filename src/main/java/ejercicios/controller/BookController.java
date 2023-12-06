@@ -19,38 +19,37 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import ejercicios.dto.Book;
-import ejercicios.dto.Rating;
 import ejercicios.service.BookServiceImpl;
 
 @RestController
 @RequestMapping("/book")
 public class BookController {
-	
+
 	@Autowired
 	BookServiceImpl bookService;
-	
+
 	@GetMapping("/all")
 	public List<Book> getAll() {
 		return bookService.getBooks();
 	}
-	
+
 	@GetMapping("/{id}")
-	public Book getById(@PathVariable(name="id") Long id) {
+	public Book getById(@PathVariable(name = "id") Long id) {
 		return bookService.bookPerId(id);
 	}
-	
+
 	@PostMapping("")
 	public Book createBook(@RequestBody Book book) {
 		return bookService.saveBook(book);
 	}
-	
+
 	@PutMapping("/{id}")
-	public Book updateBook(@PathVariable(name="id")Long id,@RequestBody Book book) {
-		
+	public Book updateBook(@PathVariable(name = "id") Long id, @RequestBody Book book) {
+
 		Book bookSelected = new Book();
-		
-		bookSelected= bookService.bookPerId(id);
-		
+
+		bookSelected = bookService.bookPerId(id);
+
 		bookSelected.setTitle(book.getTitle());
 		bookSelected.setAuthor(book.getAuthor());
 		bookSelected.setBookingStatus(book.getBookingStatus());
@@ -59,34 +58,43 @@ public class BookController {
 		bookSelected.setReservationDuration(book.getReservationDuration());
 		bookSelected.setUser(book.getUser());
 		bookSelected.setEditorial(book.getEditorial());
-		
+
 		bookSelected = bookService.updateBook(bookSelected);
-		
+
 		return bookSelected;
 	}
-	
+
 	@DeleteMapping("/{id}")
-	public void deleteBook(@PathVariable(name="id") Long id) {
+	public void deleteBook(@PathVariable(name = "id") Long id) {
 		bookService.deleteBook(id);
 	}
-	
-	
-	//Added methods
+
+	// Added methods
 	@GetMapping("/byTitle/{title}")
-    public Book getByTitle(@PathVariable(name = "title") String title) {
-        return bookService.bookPerName(title);
-    }
-	
-    //GET /api/proyectos/paginated?page=0&size=10
-    @GetMapping("/paginated")
-    public ResponseEntity<List<Book>> getPaginatedProyectos(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) {
+	public Book getByTitle(@PathVariable(name = "title") String title) {
+		return bookService.bookPerName(title);
+	}
 
-        Page<Book> bookPage = bookService.getPaginatedBook(PageRequest.of(page, size));
-        List<Book> bookDTOs = bookPage.getContent().stream().collect(Collectors.toList());
+	// GET /book/paginated?page=1&size=1
+	@GetMapping("/paginated")
+	public ResponseEntity<List<Book>> getPaginatedBooks(@RequestParam(defaultValue = "0") int page,
+			@RequestParam(defaultValue = "10") int size) {
 
-        return new ResponseEntity<>(bookDTOs, HttpStatus.OK);
-    }
+		Page<Book> bookPage = bookService.getPaginatedBook(PageRequest.of(page, size));
+		List<Book> bookDTOs = bookPage.getContent().stream().collect(Collectors.toList());
+
+		return new ResponseEntity<>(bookDTOs, HttpStatus.OK);
+	}
+
+	// GET /book/byTitlePaginated?title=Book&page=1&size=1
+	@GetMapping("/byTitlePaginated")
+	public ResponseEntity<List<Book>> searchByTitle(@RequestParam(name = "title") String title,
+			@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
+
+		Page<Book> bookPage = bookService.searchBookByTitle(title, PageRequest.of(page, size));
+		List<Book> bookDTOs = bookPage.getContent().stream().collect(Collectors.toList());
+
+		return new ResponseEntity<>(bookDTOs, HttpStatus.OK);
+	}
 
 }

@@ -12,11 +12,15 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.server.SecurityWebFilterChain;
+import org.springframework.security.web.server.util.matcher.PathPatternParserServerWebExchangeMatcher;
 import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -60,10 +64,28 @@ public class LibrarySecurityConfig {
         authenticationProvider.setPasswordEncoder(passwordEncoder());
        return authenticationProvider;
     }
-
+    
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        return http.cors().and().csrf().disable()
+    public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) {
+        http.cors(cors -> cors.disable())
+        		.csrf(csrf -> csrf.disable())
+                .securityMatcher(new PathPatternParserServerWebExchangeMatcher("/**"))
+                .authorizeExchange()
+                .anyExchange().authenticated().and()
+                .httpBasic();
+        return http.build();
+    }
+
+   /* @Bean
+    SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
+        return httpSecurity
+        		.csrf(csrf -> csrf.disable())
+        		.cors(cors -> corsConfigurationSource())
+        		.authorizeHttpRequests(auth -> auth
+        		.requestMatchers("/login/{id}").access(new WebExpressionAuthorization("#name == authentication.name"))
+        	
+        		
+        		.cors().and().csrf().disable()
                 .authorizeHttpRequests()
                 .requestMatchers(UN_SECURED_URLs).permitAll().and()
                 .authorizeHttpRequests().requestMatchers(SECURED_URLs)
@@ -74,27 +96,25 @@ public class LibrarySecurityConfig {
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
-    }
+    }*/
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
         return authConfig.getAuthenticationManager();
     }
     
-
-    // Used by Spring Security if CORS is enabled.
-    @Configuration
-    public class CorsConfig implements WebMvcConfigurer {
-    	@Bean
-    	public WebMvcConfigurer corsConfigurer() {
-    		return new WebMvcConfigurer() {
-    			@Override
-    			public void addCorsMappings(CorsRegistry registry) {
-    				registry.addMapping("/**")
-    				.allowedOrigins("*")
-    				.allowedHeaders("*");
-    			}
-    		};
-    	}
+    @Bean
+    CorsConfigurationSource corsConfigurationSource() {
+    	
+    	CorsConfiguration config = new CorsConfiguration();
+    	
+    	config.addAllowedOrigin("*");
+    	config.addAllowedMethod("*");
+    	config.addAllowedHeader("*");
+    	config.setAllowCredentials(true);
+    	
+    	UrlBasedCorsConfigurationSource src = new UrlBasedCorsConfigurationSource();
+    	src.registerCorsConfiguration("/**", config);
+    	return src;
     }
 
 }

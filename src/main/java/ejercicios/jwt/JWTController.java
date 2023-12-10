@@ -20,7 +20,7 @@ import ejercicios.exception.UserNotFoundException;
 public class JWTController {
 	@Autowired
     private JWTService jwtService;
-	@Autowired
+	
     private AuthenticationManager authenticationManager;
 
     @PostMapping

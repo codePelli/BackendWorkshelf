@@ -33,12 +33,6 @@ public class JWTService {
     public JWTService() {
         // Constructor sin argumentos
     }
-    
-    
-    @Bean
-    public AuthenticationManager authenticationManagerBean() throws Exception {
-        return authenticationManagerBean();
-    }
 
     public JWTService(String JWT_SECRET, int JWT_EXPIRATION_TIME_IN_MILLISECONDS) {
         this.JWT_SECRET = JWT_SECRET;

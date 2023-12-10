@@ -93,8 +93,10 @@ public class LibrarySecurityConfig {
         return source;
     }
     
-   public AuthenticationSuccessHandler swaggerRedirect() {
-       return (request, response, authentication) -> response.sendRedirect("/doc.html");
+   public AuthenticationSuccessHandler swaggerRedirect(){
+       return ((request, response, authentication) -> {
+           response.sendRedirect("/doc.html");
+       });
    }
 
     

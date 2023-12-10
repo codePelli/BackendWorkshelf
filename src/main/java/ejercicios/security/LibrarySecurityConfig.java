@@ -92,11 +92,11 @@ public class LibrarySecurityConfig {
     }
     
    	
-    public AuthenticationSuccessHandler swaggerRedirect(){
-        return ((request, response, authentication) -> {
-            response.sendRedirect("/doc.html");
-        });
-    }
+   @Bean
+   public AuthenticationSuccessHandler swaggerRedirect() {
+       return (request, response, authentication) -> response.sendRedirect("/doc.html");
+   }
+
     
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {

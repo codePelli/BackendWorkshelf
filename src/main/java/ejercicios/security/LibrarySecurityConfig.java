@@ -91,8 +91,6 @@ public class LibrarySecurityConfig {
         return source;
     }
     
-   	
-   @Bean
    public AuthenticationSuccessHandler swaggerRedirect() {
        return (request, response, authentication) -> response.sendRedirect("/doc.html");
    }

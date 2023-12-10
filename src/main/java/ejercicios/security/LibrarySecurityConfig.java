@@ -74,8 +74,6 @@ public class LibrarySecurityConfig {
                 )
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class)
-                .formLogin( e -> e.permitAll()
-						.successHandler(swaggerRedirect()))	
                 .build();
     }
 	
@@ -93,12 +91,6 @@ public class LibrarySecurityConfig {
         return source;
     }
     
-   public AuthenticationSuccessHandler swaggerRedirect(){
-       return ((request, response, authentication) -> {
-           response.sendRedirect("/doc.html");
-       });
-   }
-
     
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {

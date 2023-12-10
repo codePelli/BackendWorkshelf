@@ -46,6 +46,11 @@ public class LibrarySecurityConfig {
             "/role",
             "/role/**"
     };
+    
+    @Bean
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return authenticationManagerBean();
+    }
 
 
     @Bean
@@ -91,7 +96,7 @@ public class LibrarySecurityConfig {
         return source;
     }
     
-   	@Bean
+   	
     public AuthenticationSuccessHandler swaggerRedirect(){
         return ((request, response, authentication) -> {
             response.sendRedirect("/doc.html");

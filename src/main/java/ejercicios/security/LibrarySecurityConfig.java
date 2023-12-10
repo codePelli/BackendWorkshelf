@@ -68,7 +68,7 @@ public class LibrarySecurityConfig {
 				.csrf(csrf -> csrf.disable())
 				.cors( cors -> corsConfigurationSource())
 				.authorizeHttpRequests( auth -> auth
-				.requestMatchers("/api/v1/visit/{id}/{name}").access(new WebExpressionAuthorizationManager("#name == authentication.name"))
+				.requestMatchers("/login/{id}").access(new WebExpressionAuthorizationManager("#name == authentication.name"))
 				.requestMatchers("/swagger-ui/**","/doc.html").permitAll()
 				.anyRequest().authenticated()
 				)

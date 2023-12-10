@@ -9,6 +9,7 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -16,6 +17,7 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.web.access.expression.WebExpressionAuthorizationManager;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -62,20 +64,18 @@ public class LibrarySecurityConfig {
     }
 
     @Bean
-	SecurityFilterChain fliterChain (HttpSecurity httpSecurity) throws Exception {
-		
-		return httpSecurity
-				.csrf(csrf -> csrf.disable())
-				.cors( cors -> corsConfigurationSource())
-				.authorizeHttpRequests( auth -> auth
-				.requestMatchers("/login/{id}").access(new WebExpressionAuthorizationManager("#name == authentication.name"))
-				.requestMatchers("/swagger-ui/**","/doc.html").permitAll()
-				.anyRequest().authenticated()
-				)
-				.formLogin( e -> e.permitAll()
-						.successHandler(swaggerRedirect()))		
-				.build();
-	} 
+    SecurityFilterChain fliterChain(HttpSecurity httpSecurity) throws Exception {
+        return httpSecurity
+                .csrf(csrf -> csrf.disable())
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+                    .authorizeHttpRequests(auth -> auth.requestMatchers(UN_SECURED_URLs).permitAll())
+                    .authorizeHttpRequests(authz -> authz.requestMatchers(SECURED_URLs).hasAuthority("ADMIN").anyRequest().authenticated())
+                    .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                )
+                .authenticationProvider(authenticationProvider())
+                .addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                .build();
+    }
 	
 	// CORS Configuration Bean
    @Bean

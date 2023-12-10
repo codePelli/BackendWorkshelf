@@ -46,12 +46,6 @@ public class LibrarySecurityConfig {
             "/role",
             "/role/**"
     };
-    
-    @Bean
-    public AuthenticationManager authenticationManagerBean() throws Exception {
-        return authenticationManagerBean();
-    }
-
 
     @Bean
     public PasswordEncoder passwordEncoder(){

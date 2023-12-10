@@ -6,6 +6,8 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -30,6 +32,12 @@ public class JWTService {
     
     public JWTService() {
         // Constructor sin argumentos
+    }
+    
+    
+    @Bean
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return authenticationManagerBean();
     }
 
     public JWTService(String JWT_SECRET, int JWT_EXPIRATION_TIME_IN_MILLISECONDS) {

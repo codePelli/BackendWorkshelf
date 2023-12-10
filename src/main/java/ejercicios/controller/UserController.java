@@ -48,14 +48,14 @@ public class UserController {
 	@PutMapping("/{id}")
 	public User updateUser(@PathVariable(name = "id") Long id, @RequestBody User user) {
 		
-		User userSelected = new User();
+		User userSelected = userService.userPerId(id);
 		
 		userSelected.setUsername(user.getUsername());
 		userSelected.setPassword(user.getPassword());
 		userSelected.setEmail(user.getEmail());
 		userSelected.setRole(user.getRole());
 		
-		return userSelected;
+        return userService.updateUser(userSelected);
 	}
 	
 	@DeleteMapping("/{id}")

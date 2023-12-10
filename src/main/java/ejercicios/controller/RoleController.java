@@ -50,11 +50,11 @@ public class RoleController {
 	@PutMapping("/{id}")
 	public Role updateRole(@PathVariable(name = "id") Long id, @RequestBody Role Role) {
 		
-		Role RoleSelected = new Role();
+		Role RoleSelected = RoleService.RolePerId(id);
 		
 		RoleSelected.setRoleName(Role.getRoleName());
 		
-		return RoleSelected;
+		return RoleService.updateRole(RoleSelected);
 	}
 	
 	@DeleteMapping("/{id}")

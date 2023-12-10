@@ -28,51 +28,51 @@ import ejercicios.service.ReservationServiceImpl;
 public class ReservationController {
 
 	@Autowired
-	private ReservationServiceImpl ReservationService;
+	private ReservationServiceImpl reservationService;
 	
 	@GetMapping
 	public List<Reservation> getAllReservations(){
 		
-		return ReservationService.getReservations();
+		return reservationService.getReservations();
 	}
 	
 	@GetMapping("/{id}")
 	public Reservation ReservationPerId(@PathVariable Long id) {
 		
-		return ReservationService.ReservationPerId(id);
+		return reservationService.ReservationPerId(id);
 	}
 	
 	@PostMapping("/add")
 	public Reservation insertReservation(@RequestBody Reservation Reservation) {
 		
-		return ReservationService.updateReservation(Reservation);
+		return reservationService.updateReservation(Reservation);
 	}
 	
 	@PutMapping("/{id}")
 	public Reservation updateReservation(@PathVariable(name = "id") Long id, @RequestBody Reservation Reservation) {
 		
-		Reservation ReservationSelected = new Reservation();
+		Reservation reservationSelected = new Reservation();
 		
-		ReservationSelected= ReservationService.ReservationPerId(id);
+		reservationSelected= reservationService.ReservationPerId(id);
 		
-		ReservationSelected.setRequestDate(Reservation.getRequestDate());
-		ReservationSelected.setReturnDate(Reservation.getReturnDate());
-		ReservationSelected.setUser(Reservation.getUser());
-		ReservationSelected.setBook(Reservation.getBook());
+		reservationSelected.setRequestDate(Reservation.getRequestDate());
+		reservationSelected.setReturnDate(Reservation.getReturnDate());
+		reservationSelected.setUser(Reservation.getUser());
+		reservationSelected.setBook(Reservation.getBook());
 		
-		ReservationSelected = ReservationService.updateReservation(ReservationSelected);
+		reservationSelected = reservationService.updateReservation(reservationSelected);
 		
-		return ReservationSelected;
+		return reservationSelected;
 	}
 	
 	@DeleteMapping("/{id}")
 	public void deleteReservation(@PathVariable Long id) {
-		ReservationService.deleteReservation(id);
+		reservationService.deleteReservation(id);
 	}
 	
 	@GetMapping("/byReturnDate")
     public List<Reservation> getByReturnDate(@RequestParam(name = "returnDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Date returnDate) {
-        return ReservationService.reservationsByReturnDate(returnDate);
+        return reservationService.reservationsByReturnDate(returnDate);
     }
 	
     //GET /api/proyectos/paginated?page=0&size=10
@@ -81,7 +81,7 @@ public class ReservationController {
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
 
-        Page<Reservation> reservationPage = ReservationService.getPaginatedReservation(PageRequest.of(page, size));
+        Page<Reservation> reservationPage = reservationService.getPaginatedReservation(PageRequest.of(page, size));
         List<Reservation> pageDTOs = reservationPage.getContent().stream().collect(Collectors.toList());
 
         return new ResponseEntity<>(pageDTOs, HttpStatus.OK);

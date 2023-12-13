@@ -22,7 +22,7 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "books")
 public class Book {
-	private UserServiceImpl userService;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="bookId")
@@ -51,7 +51,7 @@ public class Book {
 
 
 	public Book(Long id, String title, String image, String author, String bookingStatus, int reserved, Date reservationDate,
-			Date reservationDuration, String user, Editorial editorial) {
+			Date reservationDuration, User user, Editorial editorial) {
 		this.id = id;
 		this.title = title;
 		this.image = image;
@@ -60,7 +60,7 @@ public class Book {
 		this.reserved = reserved;
 		this.reservationDate = reservationDate;
 		this.reservationDuration = reservationDuration;
-		this.user = userService.userPerId(id);
+		this.user = user;
 		this.editorial = editorial;
 	}
 

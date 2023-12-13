@@ -6,6 +6,7 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import ejercicios.service.UserServiceImpl;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -21,7 +22,7 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "books")
 public class Book {
-
+	private UserServiceImpl userService;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="bookId")
@@ -50,7 +51,7 @@ public class Book {
 
 
 	public Book(Long id, String title, String image, String author, String bookingStatus, int reserved, Date reservationDate,
-			Date reservationDuration, User user, Editorial editorial) {
+			Date reservationDuration, String user, Editorial editorial) {
 		this.id = id;
 		this.title = title;
 		this.image = image;
@@ -59,7 +60,7 @@ public class Book {
 		this.reserved = reserved;
 		this.reservationDate = reservationDate;
 		this.reservationDuration = reservationDuration;
-		this.user = user;
+		this.user = userService.userPerId(id);
 		this.editorial = editorial;
 	}
 

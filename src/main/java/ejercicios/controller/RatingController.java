@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import ejercicios.dto.Rating;
+import ejercicios.security.LibraryUserDetails;
 import ejercicios.service.RatingServiceImpl;
 
 @RestController
@@ -28,51 +29,71 @@ public class RatingController {
 	@Autowired
 	private RatingServiceImpl RatingService;
 	
+	//For getting user token
+	private LibraryUserDetails getToken;
+	
+	//FOR EVERYONE USE
 	@GetMapping()
 	public List<Rating> getAllRatings(){
 		
 		return RatingService.getRatings();
 	}
 	
+	//FOR EVERYONE USE
 	@GetMapping("/{id}")
 	public Rating RatingPerId(@PathVariable Long id) {
 		
 		return RatingService.RatingPerId(id);
 	}
 	
+	
 	@PostMapping("/add")
 	public Rating insertRating(@RequestBody Rating Rating) {
+		if (getToken.getUserToken().getUserId() == Rating.getUser().getUserId()) {
+			return RatingService.updateRating(Rating);
+		}
+		else {
+			return null;
+		}
 		
-		return RatingService.updateRating(Rating);
 	}
+	
 	
 	@PutMapping("/{id}")
 	public Rating updateRating(@PathVariable(name = "id") Long id, @RequestBody Rating Rating) {
+		if (getToken.getUserToken().getUserId() == Rating.getUser().getUserId()) {
+			Rating RatingSelected = new Rating();
+			
+			RatingSelected= RatingService.RatingPerId(id);
+			
+			RatingSelected.setComment(Rating.getComment());
+			RatingSelected.setScore(Rating.getScore());
+			RatingSelected.setUser(Rating.getUser());
+			RatingSelected.setReservation(Rating.getReservation());
+			
+			RatingSelected = RatingService.updateRating(RatingSelected);
+			
+			return RatingSelected;
+		}
+		else {
+			return null;
+		}
 		
-		Rating RatingSelected = new Rating();
-		
-		RatingSelected= RatingService.RatingPerId(id);
-		
-		RatingSelected.setComment(Rating.getComment());
-		RatingSelected.setScore(Rating.getScore());
-		RatingSelected.setUser(Rating.getUser());
-		RatingSelected.setReservation(Rating.getReservation());
-		
-		RatingSelected = RatingService.updateRating(RatingSelected);
-		
-		return RatingSelected;
 	}
 	
+	//ONLY ADMIN USE
 	@DeleteMapping("/{id}")
 	public void deleteRating(@PathVariable Long id) {
 		RatingService.deleteRating(id);
 	}
 	
+	//FOR EVERYONE USE
 	@GetMapping("/byScore/{score}")
     public List<Rating> getByScore(@PathVariable(name = "score") int score) {
         return RatingService.ratingsByScore(score);
     }
 	
+	//FOR EVERYONE USE
     //GET /api/proyectos/paginated?page=0&size=10
     @GetMapping("/paginated")
     public ResponseEntity<List<Rating>> getPaginatedProyectos(
@@ -85,6 +106,7 @@ public class RatingController {
         return new ResponseEntity<>(pageDTOs, HttpStatus.OK);
     }
     
+  //FOR EVERYONE USE
     // GET /rating/byScorePaginated?score=5&page=1&size=1
  	 	@GetMapping("/byScorePaginated")
  	public ResponseEntity<List<Rating>> searchByScore(@RequestParam(defaultValue = "5") int score,

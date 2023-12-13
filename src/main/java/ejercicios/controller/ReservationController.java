@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import ejercicios.dto.Reservation;
+import ejercicios.security.LibraryUserDetails;
 import ejercicios.service.ReservationServiceImpl;
 
 @RestController
@@ -30,6 +31,10 @@ public class ReservationController {
 	@Autowired
 	private ReservationServiceImpl reservationService;
 	
+	//For getting user token
+	private LibraryUserDetails getToken;
+		
+	//ONLY ADMIN USE
 	@GetMapping
 	public List<Reservation> getAllReservations(){
 		
@@ -38,43 +43,63 @@ public class ReservationController {
 	
 	@GetMapping("/{id}")
 	public Reservation ReservationPerId(@PathVariable Long id) {
-		
-		return reservationService.ReservationPerId(id);
+		if (getToken.getUserToken().getUserId() == reservationService.ReservationPerId(id).getUser().getUserId()) {
+			return reservationService.ReservationPerId(id);
+		}
+		else {
+			return null;
+		}
 	}
+	
 	
 	@PostMapping("/add")
 	public Reservation insertReservation(@RequestBody Reservation Reservation) {
-		
-		return reservationService.updateReservation(Reservation);
+		if (getToken.getUserToken().getUserId() == Reservation.getUser().getUserId()) {
+			return reservationService.updateReservation(Reservation);
+		}
+		else {
+			return null;
+		}
 	}
 	
 	@PutMapping("/{id}")
 	public Reservation updateReservation(@PathVariable(name = "id") Long id, @RequestBody Reservation Reservation) {
 		
-		Reservation reservationSelected = new Reservation();
+		if (getToken.getUserToken().getUserId() == Reservation.getUser().getUserId()) {
+			Reservation reservationSelected = new Reservation();
+			
+			reservationSelected= reservationService.ReservationPerId(id);
+			
+			reservationSelected.setRequestDate(Reservation.getRequestDate());
+			reservationSelected.setReturnDate(Reservation.getReturnDate());
+			reservationSelected.setUser(Reservation.getUser());
+			reservationSelected.setBook(Reservation.getBook());
+			
+			reservationSelected = reservationService.updateReservation(reservationSelected);
+			
+			return reservationSelected;
+		}
+		else {
+			return null;
+		}
 		
-		reservationSelected= reservationService.ReservationPerId(id);
-		
-		reservationSelected.setRequestDate(Reservation.getRequestDate());
-		reservationSelected.setReturnDate(Reservation.getReturnDate());
-		reservationSelected.setUser(Reservation.getUser());
-		reservationSelected.setBook(Reservation.getBook());
-		
-		reservationSelected = reservationService.updateReservation(reservationSelected);
-		
-		return reservationSelected;
 	}
 	
+	//ONLY ADMIN USE
 	@DeleteMapping("/{id}")
 	public void deleteReservation(@PathVariable Long id) {
 		reservationService.deleteReservation(id);
 	}
 	
+	/**
 	@GetMapping("/byReturnDate")
     public List<Reservation> getByReturnDate(@RequestParam(name = "returnDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Date returnDate) {
-        return reservationService.reservationsByReturnDate(returnDate);
+        
+		return reservationService.reservationsByReturnDate(returnDate);
     }
+    **/
 	
+	//ONLY ADMIN USE
     //GET /api/proyectos/paginated?page=0&size=10
     @GetMapping("/paginated")
     public ResponseEntity<List<Reservation>> getPaginatedProyectos(

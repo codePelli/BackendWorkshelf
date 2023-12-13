@@ -29,24 +29,28 @@ public class RoleController {
 	@Autowired
 	private RoleServiceImpl RoleService;
 	
+	//ONLY ADMIN USE
 	@GetMapping
 	public List<Role> getAllRoles(){
 		
 		return RoleService.getRoles();
 	}
 	
+	//ONLY ADMIN USE
 	@GetMapping("/{id}")
 	public Role RolePerId(@PathVariable Long id) {
 		
 		return RoleService.RolePerId(id);
 	}
 	
+	//ONLY ADMIN USE
 	@PostMapping("/add")
 	public Role insertRole(@RequestBody Role Role) {
 		
 		return RoleService.updateRole(Role);
 	}
 	
+	//ONLY ADMIN USE
 	@PutMapping("/{id}")
 	public Role updateRole(@PathVariable(name = "id") Long id, @RequestBody Role Role) {
 		
@@ -57,16 +61,19 @@ public class RoleController {
 		return RoleService.updateRole(RoleSelected);
 	}
 	
+	//ONLY ADMIN USE
 	@DeleteMapping("/{id}")
 	public void deleteRole(@PathVariable Long id) {
 		RoleService.deleteRole(id);
 	}
 	
+	//ONLY ADMIN USE
 	@GetMapping("/usersByRoleName")
     public List<User> getUsersByRoleName(@RequestParam(name = "roleName") String roleName) {
         return RoleService.getUsersByRoleName(roleName);
     }
 	
+	//ONLY ADMIN USE
     //GET /api/proyectos/paginated?page=0&size=10
     @GetMapping("/paginated")
     public ResponseEntity<List<Role>> getPaginatedProyectos(

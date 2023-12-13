@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import ejercicios.dto.Editorial;
+import ejercicios.security.LibraryUserDetails;
 import ejercicios.service.EditorialServiceImpl;
 
 @RestController
@@ -28,24 +29,28 @@ public class EditorialController {
 	@Autowired
 	private EditorialServiceImpl editorialService;
 	
+	//FOR EVERYONE USE
 	@GetMapping()
 	public List<Editorial> getAllEditorials(){
 		
 		return editorialService.getEditorials();
 	}
 	
+	//FOR EVERYONE USE
 	@GetMapping("/{id}")
 	public Editorial editorialPerId(@PathVariable Long id) {
 		
 		return editorialService.editorialPerId(id);
 	}
 	
+	//FOR REGISTERED USE
 	@PostMapping("/add")
 	public Editorial insertEditorial(@RequestBody Editorial editorial) {
 		
 		return editorialService.updateEditorial(editorial);
 	}
 	
+	//FOR REGISTERED USE
 	@PutMapping("/{id}")
 	public Editorial updateEditorial(@PathVariable(name = "id") Long id, @RequestBody Editorial editorial) {
 		
@@ -56,16 +61,19 @@ public class EditorialController {
 		return editorialSelected;
 	}
 	
+	//FOR ADMIN USE
 	@DeleteMapping("/{id}")
 	public void deleteEditorial(@PathVariable Long id) {
 		editorialService.deleteEditorial(id);
 	}
 	
+	//FOR EVERYONE USE
 	@GetMapping("/byName/{name}")
     public Editorial getByName(@PathVariable(name = "name") String name) {
         return editorialService.editorialByName(name);
     }
 	
+	//FOR EVERYONE USE
     //GET /book/paginated?page=0&size=3
     @GetMapping("/paginated")
     public ResponseEntity<List<Editorial>> getPaginatedProyectos(
@@ -78,6 +86,7 @@ public class EditorialController {
         return new ResponseEntity<>(userDTOs, HttpStatus.OK);
     }
     
+    //FOR EVERYONE USE
     // GET /book/byEditorialName?title=editorial&page=1&size=1
  	@GetMapping("/byEditorialName")
  	public ResponseEntity<List<Editorial>> searchByeditorialName(@RequestParam(name = "editorial") String title,

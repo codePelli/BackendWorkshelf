@@ -27,6 +27,7 @@ public class Book {
 	@Column(name="bookId")
 	private Long id;
 	private String title;
+	private String image;
 	private String author;
 	private String bookingStatus;
 	private int reserved;
@@ -48,10 +49,11 @@ public class Book {
 	private List<Reservation> reservations;
 
 
-	public Book(Long id, String title, String author, String bookingStatus, int reserved, Date reservationDate,
+	public Book(Long id, String title, String image, String author, String bookingStatus, int reserved, Date reservationDate,
 			Date reservationDuration, User user, Editorial editorial) {
 		this.id = id;
 		this.title = title;
+		this.image = image;
 		this.author = author;
 		this.bookingStatus = bookingStatus;
 		this.reserved = reserved;
@@ -59,6 +61,16 @@ public class Book {
 		this.reservationDuration = reservationDuration;
 		this.user = user;
 		this.editorial = editorial;
+	}
+
+
+	public String getImage() {
+		return image;
+	}
+
+
+	public void setImage(String image) {
+		this.image = image;
 	}
 
 

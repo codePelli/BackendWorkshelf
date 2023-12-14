@@ -47,6 +47,7 @@ public class BookController {
 	//FOR REGISTERED USE
 	@PostMapping("")
 	public Book createBook(@RequestBody Book book) {
+		book.setUser(getToken.getUserToken());
 		return bookService.saveBook(book);
 	}
 	

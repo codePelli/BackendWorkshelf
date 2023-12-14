@@ -8,6 +8,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,8 +22,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import ejercicios.dto.Book;
+import ejercicios.dto.User;
 import ejercicios.security.LibraryUserDetails;
 import ejercicios.service.BookServiceImpl;
+import ejercicios.service.UserServiceImpl;
 
 @RestController
 @RequestMapping("/book")
@@ -29,8 +34,7 @@ public class BookController {
 	@Autowired
 	BookServiceImpl bookService;
 	
-	//For getting user token
-	private LibraryUserDetails getToken;
+	UserServiceImpl userSerice;
 		
 	//FOR EVERYONE USE
 	@GetMapping("/all")
@@ -47,14 +51,14 @@ public class BookController {
 	//FOR REGISTERED USE
 	@PostMapping("")
 	public Book createBook(@RequestBody Book book) {
-		book.setUser(getToken.getUserToken());
+		book.setUser(getUserToken());
 		return bookService.saveBook(book);
 	}
 	
 	//FOR REGISTERED USE
 	@PutMapping("/{id}")
 	public Book updateBook(@PathVariable(name = "id") Long id, @RequestBody Book book) {
-		if (getToken.getUserToken().getUserId() == book.getUser().getUserId()) { 
+		if (getUserToken().getUserId() == book.getUser().getUserId()) { 
 			Book bookSelected = new Book();
 
 			bookSelected = bookService.bookPerId(id);
@@ -114,5 +118,12 @@ public class BookController {
 
 		return new ResponseEntity<>(bookDTOs, HttpStatus.OK);
 	}
+	
+	public User getUserToken() {
+    	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = ((UserDetails)auth.getPrincipal()).getUsername();
+        User user = userSerice.getUser(username);
+        return user;
+    }
 
 }

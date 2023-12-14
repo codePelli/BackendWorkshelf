@@ -1,15 +1,16 @@
 package ejercicios.controller;
 
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,8 +22,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import ejercicios.dto.Reservation;
-import ejercicios.security.LibraryUserDetails;
+import ejercicios.dto.User;
 import ejercicios.service.ReservationServiceImpl;
+import ejercicios.service.UserServiceImpl;
 
 @RestController
 @RequestMapping("/reservation")
@@ -31,8 +33,8 @@ public class ReservationController {
 	@Autowired
 	private ReservationServiceImpl reservationService;
 	
-	//For getting user token
-	private LibraryUserDetails getToken;
+	@Autowired
+	UserServiceImpl userSerice;
 		
 	//ONLY ADMIN USE
 	@GetMapping
@@ -42,30 +44,28 @@ public class ReservationController {
 	}
 	
 	@GetMapping("/{id}")
-	public Reservation ReservationPerId(@PathVariable Long id) {
-		if (getToken.getUserToken().getUserId() == reservationService.ReservationPerId(id).getUser().getUserId()) {
-			return reservationService.ReservationPerId(id);
+	public ResponseEntity<Reservation> ReservationPerId(@PathVariable Long id) {
+		if (getUserToken().getUserId().equals(reservationService.ReservationPerId(id).getUser().getUserId())) {
+			
+			return new ResponseEntity<>(reservationService.ReservationPerId(id), HttpStatus.OK);
 		}
 		else {
-			return null;
+			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 		}
 	}
 	
-	
+	//ONLY REGISTERED USER
 	@PostMapping("/add")
 	public Reservation insertReservation(@RequestBody Reservation Reservation) {
-		if (getToken.getUserToken().getUserId() == Reservation.getUser().getUserId()) {
-			return reservationService.updateReservation(Reservation);
-		}
-		else {
-			return null;
-		}
+		Reservation.setUser(getUserToken());
+		return reservationService.updateReservation(Reservation);
 	}
 	
+	//ONLY REGISTERED USER
 	@PutMapping("/{id}")
-	public Reservation updateReservation(@PathVariable(name = "id") Long id, @RequestBody Reservation Reservation) {
+	public ResponseEntity<Reservation> updateReservation(@PathVariable(name = "id") Long id, @RequestBody Reservation Reservation) {
 		
-		if (getToken.getUserToken().getUserId() == Reservation.getUser().getUserId()) {
+		if (getUserToken().getUserId().equals(reservationService.ReservationPerId(id).getUser().getUserId())) {
 			Reservation reservationSelected = new Reservation();
 			
 			reservationSelected= reservationService.ReservationPerId(id);
@@ -77,10 +77,10 @@ public class ReservationController {
 			
 			reservationSelected = reservationService.updateReservation(reservationSelected);
 			
-			return reservationSelected;
+			return new ResponseEntity<>(reservationSelected, HttpStatus.OK);
 		}
 		else {
-			return null;
+			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 		}
 		
 	}
@@ -110,5 +110,12 @@ public class ReservationController {
         List<Reservation> pageDTOs = reservationPage.getContent().stream().collect(Collectors.toList());
 
         return new ResponseEntity<>(pageDTOs, HttpStatus.OK);
+    }
+    
+    public User getUserToken() {
+    	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = ((UserDetails)auth.getPrincipal()).getUsername();
+        User user = userSerice.getUser(username);
+        return user;
     }
 }

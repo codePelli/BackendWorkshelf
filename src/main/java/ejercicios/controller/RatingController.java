@@ -8,6 +8,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,8 +22,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import ejercicios.dto.Rating;
-import ejercicios.security.LibraryUserDetails;
+import ejercicios.dto.User;
 import ejercicios.service.RatingServiceImpl;
+import ejercicios.service.UserServiceImpl;
 
 @RestController
 @RequestMapping("/rating")
@@ -29,8 +33,8 @@ public class RatingController {
 	@Autowired
 	private RatingServiceImpl RatingService;
 	
-	//For getting user token
-	private LibraryUserDetails getToken;
+	@Autowired
+	UserServiceImpl userSerice;
 	
 	//FOR EVERYONE USE
 	@GetMapping()
@@ -49,19 +53,14 @@ public class RatingController {
 	
 	@PostMapping("/add")
 	public Rating insertRating(@RequestBody Rating Rating) {
-		if (getToken.getUserToken().getUserId() == Rating.getUser().getUserId()) {
-			return RatingService.updateRating(Rating);
-		}
-		else {
-			return null;
-		}
-		
+		Rating.setUser(getUserToken());
+		return RatingService.updateRating(Rating);
 	}
 	
 	
 	@PutMapping("/{id}")
-	public Rating updateRating(@PathVariable(name = "id") Long id, @RequestBody Rating Rating) {
-		if (getToken.getUserToken().getUserId() == Rating.getUser().getUserId()) {
+	public ResponseEntity<Rating> updateRating(@PathVariable(name = "id") Long id, @RequestBody Rating Rating) {
+		if (getUserToken().getUserId().equals(RatingService.RatingPerId(id).getUser().getUserId())) {
 			Rating RatingSelected = new Rating();
 			
 			RatingSelected= RatingService.RatingPerId(id);
@@ -73,10 +72,10 @@ public class RatingController {
 			
 			RatingSelected = RatingService.updateRating(RatingSelected);
 			
-			return RatingSelected;
+			return new ResponseEntity<>(RatingSelected, HttpStatus.OK);
 		}
 		else {
-			return null;
+			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 		}
 		
 	}
@@ -117,4 +116,11 @@ public class RatingController {
 
  		return new ResponseEntity<>(bookDTOs, HttpStatus.OK);
  	}
+ 	 	
+ 	public User getUserToken() {
+    	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = ((UserDetails)auth.getPrincipal()).getUsername();
+        User user = userSerice.getUser(username);
+        return user;
+    }
 }

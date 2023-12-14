@@ -23,7 +23,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import ejercicios.dto.Book;
 import ejercicios.dto.User;
-import ejercicios.security.LibraryUserDetails;
 import ejercicios.service.BookServiceImpl;
 import ejercicios.service.UserServiceImpl;
 
@@ -58,9 +57,7 @@ public class BookController {
 	
 	//FOR REGISTERED USE
 	@PutMapping("/{id}")
-	public Book updateBook(@PathVariable(name = "id") Long id, @RequestBody Book book) {
-		System.out.println("EL PRIMERO "+getUserToken().getUserId());
-		System.out.println("EL SEGUNDO "+bookService.bookPerId(id).getUser().getUserId());
+	public ResponseEntity<Book> updateBook(@PathVariable(name = "id") Long id, @RequestBody Book book) {
 		if (getUserToken().getUserId().equals(bookService.bookPerId(id).getUser().getUserId())) {
 			Book bookSelected = new Book();
 
@@ -77,10 +74,10 @@ public class BookController {
 
 			bookSelected = bookService.updateBook(bookSelected);
 
-			return bookSelected;
+			return new ResponseEntity<>(bookSelected, HttpStatus.OK);
 		}
 		else {
-			return null;
+			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 		}
 		
 	}

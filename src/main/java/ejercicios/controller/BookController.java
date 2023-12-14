@@ -43,20 +43,20 @@ public class BookController {
 	}
 	
 	//FOR EVERYONE USE
-	@GetMapping("/{id}")
+	@GetMapping("/detail/{id}")
 	public Book getById(@PathVariable(name = "id") Long id) {
 		return bookService.bookPerId(id);
 	}
 	
 	//FOR REGISTERED USE
-	@PostMapping("")
+	@PostMapping("/add")
 	public Book createBook(@RequestBody Book book) {
 		book.setUser(getUserToken());
 		return bookService.saveBook(book);
 	}
 	
 	//FOR REGISTERED USE
-	@PutMapping("/{id}")
+	@PutMapping("/update/{id}")
 	public ResponseEntity<Book> updateBook(@PathVariable(name = "id") Long id, @RequestBody Book book) {
 		if (getUserToken().getUserId().equals(bookService.bookPerId(id).getUser().getUserId())) {
 			Book bookSelected = new Book();
@@ -83,7 +83,7 @@ public class BookController {
 	}
 	
 	//ONLY ADMIN USE
-	@DeleteMapping("/{id}")
+	@DeleteMapping("/delete/{id}")
 	public void deleteBook(@PathVariable(name = "id") Long id) {
 		bookService.deleteBook(id);
 	}

@@ -33,12 +33,12 @@ public class UserController {
 	private LibraryUserDetails getToken;
 	
 	//ONLY ADMIN USE
-	@GetMapping
+	@GetMapping("/all")
 	public List<User> getAllUsers(){	
 		return userService.getUsers();
 	}
 	
-	@GetMapping("/{id}")
+	@GetMapping("/detail/{id}")
 	public ResponseEntity<User> userPerId(@PathVariable Long id) {
 		if (getToken.getUserToken().getUserId().equals(id)) {	
 			return new ResponseEntity<>(userService.userPerId(id), HttpStatus.OK);
@@ -55,7 +55,7 @@ public class UserController {
 	}
 	
 	//ONLY REGISTERED USER
-	@PutMapping("/{id}")
+	@PutMapping("/update/{id}")
 	public ResponseEntity<User> updateUser(@PathVariable(name = "id") Long id, @RequestBody User user) {
 		if (getToken.getUserToken().getUserId().equals(id)) {
 			User userSelected = userService.userPerId(id);
@@ -74,7 +74,7 @@ public class UserController {
 	}
 	
 	//ONLY ADMIN USE
-	@DeleteMapping("/{id}")
+	@DeleteMapping("/delete/{id}")
 	public void deleteUser(@PathVariable Long id) {
 		if (getToken.getUserToken().getUserId() == id) {
 			userService.deleteUser(id);

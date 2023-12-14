@@ -30,14 +30,14 @@ public class RoleController {
 	private RoleServiceImpl RoleService;
 	
 	//ONLY ADMIN USE
-	@GetMapping
+	@GetMapping("/all")
 	public List<Role> getAllRoles(){
 		
 		return RoleService.getRoles();
 	}
 	
 	//ONLY ADMIN USE
-	@GetMapping("/{id}")
+	@GetMapping("/detail/{id}")
 	public Role RolePerId(@PathVariable Long id) {
 		
 		return RoleService.RolePerId(id);
@@ -51,7 +51,7 @@ public class RoleController {
 	}
 	
 	//ONLY ADMIN USE
-	@PutMapping("/{id}")
+	@PutMapping("/update/{id}")
 	public Role updateRole(@PathVariable(name = "id") Long id, @RequestBody Role Role) {
 		
 		Role RoleSelected = RoleService.RolePerId(id);
@@ -62,7 +62,7 @@ public class RoleController {
 	}
 	
 	//ONLY ADMIN USE
-	@DeleteMapping("/{id}")
+	@DeleteMapping("/delete/{id}")
 	public void deleteRole(@PathVariable Long id) {
 		RoleService.deleteRole(id);
 	}

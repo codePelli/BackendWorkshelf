@@ -29,14 +29,14 @@ public class EditorialController {
 	private EditorialServiceImpl editorialService;
 	
 	//FOR EVERYONE USE
-	@GetMapping()
+	@GetMapping("/all")
 	public List<Editorial> getAllEditorials(){
 		
 		return editorialService.getEditorials();
 	}
 	
 	//FOR EVERYONE USE
-	@GetMapping("/{id}")
+	@GetMapping("/detail/{id}")
 	public Editorial editorialPerId(@PathVariable Long id) {
 		
 		return editorialService.editorialPerId(id);
@@ -50,7 +50,7 @@ public class EditorialController {
 	}
 	
 	//FOR REGISTERED USE
-	@PutMapping("/{id}")
+	@PutMapping("/update/{id}")
 	public Editorial updateEditorial(@PathVariable(name = "id") Long id, @RequestBody Editorial editorial) {
 		
 		Editorial editorialSelected = new Editorial();
@@ -61,7 +61,7 @@ public class EditorialController {
 	}
 	
 	//FOR ADMIN USE
-	@DeleteMapping("/{id}")
+	@DeleteMapping("/delete/{id}")
 	public void deleteEditorial(@PathVariable Long id) {
 		editorialService.deleteEditorial(id);
 	}

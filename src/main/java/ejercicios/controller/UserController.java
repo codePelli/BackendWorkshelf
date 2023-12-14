@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import ejercicios.dto.User;
+import ejercicios.security.LibraryUserDetails;
 import ejercicios.service.UserServiceImpl;
 
 @RestController
@@ -27,47 +28,70 @@ public class UserController {
 	
 	@Autowired
 	private UserServiceImpl userService;
-
+	
+	//For getting user token
+	private LibraryUserDetails getToken;
+	
+	//ONLY ADMIN USE
 	@GetMapping
-	public List<User> getAllUsers(){
-		
+	public List<User> getAllUsers(){	
 		return userService.getUsers();
 	}
 	
 	@GetMapping("/{id}")
-	public User userPerId(@PathVariable Long id) {
-		
-		return userService.userPerId(id);
+	public ResponseEntity<User> userPerId(@PathVariable Long id) {
+		if (getToken.getUserToken().getUserId().equals(id)) {	
+			return new ResponseEntity<>(userService.userPerId(id), HttpStatus.OK);
+		}
+		else {
+			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+		}
 	}
 	
+	//ONLY ADMIN USE
 	@PostMapping("/add")
 	public User insertUser(@RequestBody User user) {
 		return userService.saveUser(user);
 	}
 	
+	//ONLY REGISTERED USER
 	@PutMapping("/{id}")
-	public User updateUser(@PathVariable(name = "id") Long id, @RequestBody User user) {
+	public ResponseEntity<User> updateUser(@PathVariable(name = "id") Long id, @RequestBody User user) {
+		if (getToken.getUserToken().getUserId().equals(id)) {
+			User userSelected = userService.userPerId(id);
+			
+			userSelected.setUsername(user.getUsername());
+			userSelected.setPassword(user.getPassword());
+			userSelected.setEmail(user.getEmail());
+			userSelected.setRole(user.getRole());
+			
+	        return new ResponseEntity<>(userService.updateUser(userSelected), HttpStatus.OK);
+		}
+		else {
+			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+		}
 		
-		User userSelected = userService.userPerId(id);
-		
-		userSelected.setUsername(user.getUsername());
-		userSelected.setPassword(user.getPassword());
-		userSelected.setEmail(user.getEmail());
-		userSelected.setRole(user.getRole());
-		
-        return userService.updateUser(userSelected);
 	}
 	
+	//ONLY ADMIN USE
 	@DeleteMapping("/{id}")
 	public void deleteUser(@PathVariable Long id) {
-		userService.deleteUser(id);
+		if (getToken.getUserToken().getUserId() == id) {
+			userService.deleteUser(id);
+		}
 	}
 	
 	@GetMapping("/byUsername")
-    public User getByUsername(@RequestParam(name = "username") String username) {
-        return userService.userByUsername(username);
+    public ResponseEntity<User> getByUsername(@RequestParam(name = "username") String username) {
+		if (getToken.getUserToken().getUsername().equals(username)) {
+			return new ResponseEntity<>(userService.userByUsername(username), HttpStatus.OK);
+		}
+		else {
+			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+		}
     }
 	
+	//ONLY ADMIN USE
     //GET /api/proyectos/paginated?page=0&size=10
     @GetMapping("/paginated")
     public ResponseEntity<List<User>> getPaginatedProyectos(
@@ -79,4 +103,7 @@ public class UserController {
 
         return new ResponseEntity<>(userDTOs, HttpStatus.OK);
     }
+
+	
+
 }

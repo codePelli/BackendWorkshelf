@@ -6,20 +6,28 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import ejercicios.dto.User;
+import ejercicios.service.UserServiceImpl;
 
 
 
 
 public class LibraryUserDetails implements UserDetails {
 
-    private String userName;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private String userName;
     private String password;
     private List<GrantedAuthority> authorities;
+    private UserServiceImpl userSerice;
 
     public LibraryUserDetails(User user) {
         userName = user.getEmail();
@@ -63,5 +71,12 @@ public class LibraryUserDetails implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+    
+    public User getUserToken() {
+    	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = ((UserDetails)auth.getPrincipal()).getUsername();
+        User user = userSerice.getUser(username);
+        return user;
     }
 }

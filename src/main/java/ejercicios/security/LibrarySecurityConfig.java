@@ -36,10 +36,10 @@ public class LibrarySecurityConfig {
 	private LibraryUserDetailsService userDetailsService;
 
     private static final String[] ADMIN_URL = {
-    		"books/delete/**",
-    		"editorial/delete/**",
-    		"rating/delete/**",
-    		"reservation/delete/**",
+    		"/book/delete/**",
+    		"/editorial/delete/**",
+    		"/rating/delete/**",
+    		"/reservation/delete/**",
             "/role",
             "/role/**",
             "/user/all",
@@ -48,11 +48,11 @@ public class LibrarySecurityConfig {
             };
 
     private static final String[] UN_SECURED_URLs = {
-            "/books/all",
-            "/books/detail/**",
-            "/books/byTitle/**",
-            "/books/paginated",
-            "/books/byTitlePaginated",
+            "/book/all",
+            "/book/detail/**",
+            "/book/byTitle/**",
+            "/book/paginated",
+            "/book/byTitlePaginated",
             "/editorial/all",
             "/editorial/detail/**",
             "/editorial/byName/**",
@@ -90,7 +90,6 @@ public class LibrarySecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                     .authorizeHttpRequests(auth -> auth.requestMatchers(UN_SECURED_URLs).permitAll())
-                    .authorizeHttpRequests(auth -> auth.requestMatchers("/swagger-ui/**","/doc.html").permitAll())
                     .authorizeHttpRequests(authz -> authz.requestMatchers(ADMIN_URL).hasAuthority("ADMIN").anyRequest().authenticated())
                     .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )

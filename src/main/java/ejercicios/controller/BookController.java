@@ -60,8 +60,8 @@ public class BookController {
 	@PutMapping("/{id}")
 	public Book updateBook(@PathVariable(name = "id") Long id, @RequestBody Book book) {
 		System.out.println("EL PRIMERO "+getUserToken().getUserId());
-		System.out.println("EL SEGUNDO "+book.getUser().getUserId());
-		if (getUserToken().getUserId().equals(book.getUser().getUserId())) {
+		System.out.println("EL SEGUNDO "+bookService.bookPerId(id).getUser().getUserId());
+		if (getUserToken().getUserId().equals(bookService.bookPerId(id).getUser().getUserId())) {
 			Book bookSelected = new Book();
 
 			bookSelected = bookService.bookPerId(id);

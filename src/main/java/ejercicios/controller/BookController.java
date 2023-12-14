@@ -34,6 +34,7 @@ public class BookController {
 	@Autowired
 	BookServiceImpl bookService;
 	
+	@Autowired
 	UserServiceImpl userSerice;
 		
 	//FOR EVERYONE USE

@@ -112,7 +112,7 @@ public class ReservationController {
         return new ResponseEntity<>(pageDTOs, HttpStatus.OK);
     }
     
-	@GetMapping("/reservesById")
+	@GetMapping("/reservesByUserId")
 	public ResponseEntity<List<Reservation>> listByUserId(
 			@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
 

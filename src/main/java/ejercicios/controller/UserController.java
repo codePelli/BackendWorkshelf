@@ -103,7 +103,15 @@ public class UserController {
 
         return new ResponseEntity<>(userDTOs, HttpStatus.OK);
     }
-
-	
+    
+	@GetMapping("/byEmail")
+    public ResponseEntity<User> byEmail(@RequestParam(name = "email") String email) {
+		if (getToken.getUserToken().getEmail().equals(email)) {
+			return new ResponseEntity<>(userService.getUser(email), HttpStatus.OK);
+		}
+		else {
+			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+		}
+    }
 
 }

@@ -37,13 +37,13 @@ public class ReservationController {
 	UserServiceImpl userSerice;
 		
 	//ONLY ADMIN USE
-	@GetMapping
+	@GetMapping("/all")
 	public List<Reservation> getAllReservations(){
 		
 		return reservationService.getReservations();
 	}
 	
-	@GetMapping("/{id}")
+	@GetMapping("/detail/{id}")
 	public ResponseEntity<Reservation> ReservationPerId(@PathVariable Long id) {
 		if (getUserToken().getUserId().equals(reservationService.ReservationPerId(id).getUser().getUserId())) {
 			
@@ -62,7 +62,7 @@ public class ReservationController {
 	}
 	
 	//ONLY REGISTERED USER
-	@PutMapping("/{id}")
+	@PutMapping("/update/{id}")
 	public ResponseEntity<Reservation> updateReservation(@PathVariable(name = "id") Long id, @RequestBody Reservation Reservation) {
 		
 		if (getUserToken().getUserId().equals(reservationService.ReservationPerId(id).getUser().getUserId())) {
@@ -86,7 +86,7 @@ public class ReservationController {
 	}
 	
 	//ONLY ADMIN USE
-	@DeleteMapping("/{id}")
+	@DeleteMapping("/delete/{id}")
 	public void deleteReservation(@PathVariable Long id) {
 		reservationService.deleteReservation(id);
 	}

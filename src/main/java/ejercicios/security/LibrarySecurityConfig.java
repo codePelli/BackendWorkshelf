@@ -35,17 +35,40 @@ public class LibrarySecurityConfig {
 	@Autowired
 	private LibraryUserDetailsService userDetailsService;
 
-    private static final String[] SECURED_URLs = {"/user/**"};
+    private static final String[] ADMIN_URL = {
+    		"books/delete/**",
+    		"editorial/delete/**",
+    		"rating/delete/**",
+    		"reservation/delete/**",
+            "/role",
+            "/role/**",
+            "/user/all",
+            "/user/delete/**",
+            "/user/paginated"
+            };
 
     private static final String[] UN_SECURED_URLs = {
-            //"/books/all",
-            "/user",
-            "/user/**",
+            "/books/all",
+            "/books/detail/**",
+            "/books/byTitle/**",
+            "/books/paginated",
+            "/books/byTitlePaginated",
+            "/editorial/all",
+            "/editorial/detail/**",
+            "/editorial/byName/**",
+            "/editorial/paginated",
+            "/editorial/byEditorialName",
+            "/rating/all",
+            "/rating/detail/**",
+            "/rating/byScore/**",
+            "/rating/paginated",
+            "/rating/byScorePaginated",
+            "/user/add",
+            "/user/byUsername",
             "/login/**",
             "/swagger-ui",
             "/swagger-ui/**",
-            "/role",
-            "/role/**"
+
     };
 
     @Bean
@@ -68,7 +91,7 @@ public class LibrarySecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                     .authorizeHttpRequests(auth -> auth.requestMatchers(UN_SECURED_URLs).permitAll())
                     .authorizeHttpRequests(auth -> auth.requestMatchers("/swagger-ui/**","/doc.html").permitAll())
-                    .authorizeHttpRequests(authz -> authz.requestMatchers(SECURED_URLs).hasAuthority("ADMIN").anyRequest().authenticated())
+                    .authorizeHttpRequests(authz -> authz.requestMatchers(ADMIN_URL).hasAuthority("ADMIN").anyRequest().authenticated())
                     .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
                 .authenticationProvider(authenticationProvider())

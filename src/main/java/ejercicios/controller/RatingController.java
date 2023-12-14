@@ -37,14 +37,14 @@ public class RatingController {
 	UserServiceImpl userSerice;
 	
 	//FOR EVERYONE USE
-	@GetMapping()
+	@GetMapping("/all")
 	public List<Rating> getAllRatings(){
 		
 		return RatingService.getRatings();
 	}
 	
 	//FOR EVERYONE USE
-	@GetMapping("/{id}")
+	@GetMapping("/detail/{id}")
 	public Rating RatingPerId(@PathVariable Long id) {
 		
 		return RatingService.RatingPerId(id);
@@ -58,7 +58,7 @@ public class RatingController {
 	}
 	
 	
-	@PutMapping("/{id}")
+	@PutMapping("/update/{id}")
 	public ResponseEntity<Rating> updateRating(@PathVariable(name = "id") Long id, @RequestBody Rating Rating) {
 		if (getUserToken().getUserId().equals(RatingService.RatingPerId(id).getUser().getUserId())) {
 			Rating RatingSelected = new Rating();
@@ -81,7 +81,7 @@ public class RatingController {
 	}
 	
 	//ONLY ADMIN USE
-	@DeleteMapping("/{id}")
+	@DeleteMapping("/delete/{id}")
 	public void deleteRating(@PathVariable Long id) {
 		RatingService.deleteRating(id);
 	}

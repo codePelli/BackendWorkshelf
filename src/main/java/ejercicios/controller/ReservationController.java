@@ -112,6 +112,16 @@ public class ReservationController {
         return new ResponseEntity<>(pageDTOs, HttpStatus.OK);
     }
     
+	@GetMapping("/reservesById")
+	public ResponseEntity<List<Reservation>> listByUserId(
+			@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
+
+		Page<Reservation> resvId = reservationService.getReservesByUser(getUserToken(), PageRequest.of(page, size));
+		List<Reservation> pageId = resvId.getContent().stream().collect(Collectors.toList());
+
+		return new ResponseEntity<>(pageId, HttpStatus.OK);
+	}
+    
     public User getUserToken() {
     	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username = ((UserDetails)auth.getPrincipal()).getUsername();

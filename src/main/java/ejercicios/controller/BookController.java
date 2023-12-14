@@ -119,6 +119,16 @@ public class BookController {
 		return new ResponseEntity<>(bookDTOs, HttpStatus.OK);
 	}
 	
+	@GetMapping("/bookByUserId")
+	public ResponseEntity<List<Book>> listByUserId(
+			@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
+
+		Page<Book> resvId = bookService.getBookByUserId(getUserToken(), PageRequest.of(page, size));
+		List<Book> pageId = resvId.getContent().stream().collect(Collectors.toList());
+
+		return new ResponseEntity<>(pageId, HttpStatus.OK);
+	}
+	
 	public User getUserToken() {
     	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username = ((UserDetails)auth.getPrincipal()).getUsername();

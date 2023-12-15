@@ -37,6 +37,7 @@ public class LibrarySecurityConfig {
 
     private static final String[] ADMIN_URL = {
     		"/book/delete/**",
+    		"/editorial/update/**",
     		"/editorial/delete/**",
     		"/rating/delete/**",
     		"/reservation/all",

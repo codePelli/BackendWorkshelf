@@ -69,7 +69,7 @@ public class ReservationController {
             Reservation reservation = new Reservation();
             reservation.setBook(book);
             reservation.setUser(getUserToken());
-            reservation.setRequestDate(new Date(bookId));
+            reservation.setRequestDate(new Date(0, 0, 0));
 
             book.setReserved(1);
             book.setBookingStatus("Reserved");

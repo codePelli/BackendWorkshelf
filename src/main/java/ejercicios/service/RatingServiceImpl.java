@@ -2,6 +2,7 @@ package ejercicios.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -9,6 +10,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import ejercicios.dao.IBookDAO;
 import ejercicios.dao.RatingDAO;
 import ejercicios.dto.Book;
 import ejercicios.dto.Rating;
@@ -19,6 +21,9 @@ public class RatingServiceImpl implements IRatingService{
 	
 	@Autowired
 	RatingDAO ratingsDAO;
+	
+	@Autowired
+	BookServiceImpl bookService;
 	
 	@Autowired
 	ReservationServiceImpl reservationService;
@@ -73,7 +78,7 @@ public class RatingServiceImpl implements IRatingService{
 		return ratingsDAO.findByReservationId(reservation);
 	}
 	
-	public Page<Rating> getAllPaginatedRatingsByBook(Book book, Pageable pageable) {
+	/*public Page<Rating> getAllPaginatedRatingsByBook(Book book, Pageable pageable) {
 	    List<Reservation> reservations = reservationService.getAllReservesByBook(book);
 	    List<Rating> ratings = new ArrayList<>();
 
@@ -86,7 +91,18 @@ public class RatingServiceImpl implements IRatingService{
 	    int end = (start + pageable.getPageSize()) > ratings.size() ? ratings.size() : (start + pageable.getPageSize());
 
 	    return new PageImpl<>(ratings.subList(start, end), pageable, ratings.size());
-	}
+	}*/
+	
+    public Page<Rating> getAllPaginatedRatingsByBookId(Long bookId, Pageable pageable) {
+        Book book = bookService.bookPerId(bookId);
+        List<Reservation> reservations = reservationService.getAllReservesByBook(book);
+
+        List<Rating> ratings = reservations.stream()
+                .flatMap(reservation -> getRatingByReservation(reservation).stream())
+                .collect(Collectors.toList());
+
+        return new PageImpl<>(ratings, pageable, ratings.size());
+    }
 
 }
 

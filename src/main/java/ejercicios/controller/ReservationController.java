@@ -1,6 +1,5 @@
 package ejercicios.controller;
 
-import java.sql.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -37,10 +36,10 @@ public class ReservationController {
 	private ReservationServiceImpl reservationService;
 	
 	@Autowired
-	UserServiceImpl userSerice;
+	BookServiceImpl bookService;
 	
 	@Autowired
-	BookServiceImpl bookService;
+	UserServiceImpl userSerice;
 		
 	//ONLY ADMIN USE
 	@GetMapping("/all")
@@ -61,35 +60,11 @@ public class ReservationController {
 	}
 	
 	//ONLY REGISTERED USER
-    @PostMapping("/add")
-    public ResponseEntity<Reservation> insertReservation(@RequestBody Long bookId) {
-    	Book book = bookService.bookPerId(bookId);
-    	book.setUser(getUserToken());
-
-        if (book.getReserved() == 0 && "Available".equals(book.getBookingStatus())) {
-            Reservation reservation = new Reservation();
-            reservation.setBook(book);
-            reservation.setUser(getUserToken());
-            reservation.setRequestDate(new Date(0, 0, 0));
-
-            book.setReserved(1);
-            book.setBookingStatus("Reserved");
-
-            reservationService.updateReservation(reservation);
-            bookService.updateBook(book);
-
-            return new ResponseEntity<>(reservation, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-    }
-	
-	/*//ONLY REGISTERED USER
 	@PostMapping("/add")
 	public Reservation insertReservation(@RequestBody Reservation Reservation) {
 		Reservation.setUser(getUserToken());
 		return reservationService.updateReservation(Reservation);
-	}*/
+	}
 	
 	//ONLY REGISTERED USER
 	@PutMapping("/update/{id}")
@@ -142,11 +117,12 @@ public class ReservationController {
         return new ResponseEntity<>(pageDTOs, HttpStatus.OK);
     }
     
-	@GetMapping("/reservesByUserId")
-	public ResponseEntity<List<Reservation>> listByUserId(@PathVariable Long id,
+	@GetMapping("/reserveByBookId")
+	public ResponseEntity<List<Reservation>> listByBookId(
+			@PathVariable Long id,
 			@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
 
-		Page<Reservation> resvId = reservationService.getReservesByUser(getUserToken(), PageRequest.of(page, size));
+		Page<Reservation> resvId = reservationService.getReservesByBook(bookService.bookPerId(id), PageRequest.of(page, size));
 		List<Reservation> pageId = resvId.getContent().stream().collect(Collectors.toList());
 
 		return new ResponseEntity<>(pageId, HttpStatus.OK);

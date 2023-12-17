@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import ejercicios.dto.Book;
 import ejercicios.dto.Reservation;
 import ejercicios.dto.User;
 
@@ -17,5 +18,7 @@ public interface ReservationDAO extends JpaRepository<Reservation,Long>{
 	Reservation findById(int id);
 	
 	<T> Page<T> findAllByUser(User user, Pageable pageable);
+	
+	<T> Page<T> findReservesByBook(Book book, Pageable pageable);
 
 }

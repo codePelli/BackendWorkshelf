@@ -64,6 +64,7 @@ public class ReservationController {
     @PostMapping("/add")
     public ResponseEntity<Reservation> insertReservation(@PathVariable(name = "id") Long bookId) {
     	Book book = bookService.bookPerId(bookId);
+    	book.setUser(getUserToken());
 
         if (book.getReserved() == 0 && "Available".equals(book.getBookingStatus())) {
             Reservation reservation = new Reservation();

@@ -79,9 +79,7 @@ public class UserController {
 	//ONLY ADMIN USE
 	@DeleteMapping("/delete/{id}")
 	public void deleteUser(@PathVariable Long id) {
-		if (getUserToken().getUserId() == id) {
-			userService.deleteUser(id);
-		}
+		userService.deleteUser(id);
 	}
 	
 	@GetMapping("/byUsername")

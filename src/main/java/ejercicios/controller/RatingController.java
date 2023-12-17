@@ -139,6 +139,4 @@ public class RatingController {
 	public List<Rating> ratingsByBook(@PathVariable Long id) {
 		return ratingService.getAllRatingsByBook(id);
 	}
- 	
- 	
 }

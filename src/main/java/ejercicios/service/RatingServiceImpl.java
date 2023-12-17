@@ -86,9 +86,7 @@ public class RatingServiceImpl implements IRatingService{
 		   List<Rating> reservationRatings = reservation.getRatings();
 		   allRatings.addAll(reservationRatings);
 	   }
-
 	   return allRatings;
 	}
-	
 }
 

@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import ejercicios.dto.Book;
+import ejercicios.dto.Rating;
 import ejercicios.dto.Reservation;
 import ejercicios.dto.User;
 import ejercicios.service.BookServiceImpl;
@@ -95,14 +96,6 @@ public class ReservationController {
 	public void deleteReservation(@PathVariable Long id) {
 		reservationService.deleteReservation(id);
 	}
-	
-	/**
-	@GetMapping("/byReturnDate")
-    public List<Reservation> getByReturnDate(@RequestParam(name = "returnDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Date returnDate) {
-        
-		return reservationService.reservationsByReturnDate(returnDate);
-    }
-    **/
 	
 	//ONLY ADMIN USE
     //GET /api/proyectos/paginated?page=0&size=10

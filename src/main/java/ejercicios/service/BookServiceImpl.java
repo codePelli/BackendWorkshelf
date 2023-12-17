@@ -44,18 +44,15 @@ public class BookServiceImpl implements IBookService{
 
 	@Override
 	public Page<Book> getPaginatedBook(Pageable pageable) {
-		// TODO Auto-generated method stub
 		return bookDAO.findAll(pageable);
 	}
 	
 	public Page<Book> searchBookByTitle(String title, Pageable pageable) {
-		// TODO Auto-generated method stub
 		return bookDAO.findAllByTitleContainingIgnoreCase(title, pageable);
 	}
 	
 	@Override
 	public Page<Book> getBookByUserId(User user, Pageable pageable) {
-		// TODO Auto-generated method stub
 		return bookDAO.findAllByUser(user, pageable);
 	}
 

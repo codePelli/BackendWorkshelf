@@ -128,38 +128,17 @@ public class RatingController {
  		return new ResponseEntity<>(bookDTOs, HttpStatus.OK);
  	}
  	 	
- 	 	
- 	 	/*@GetMapping("/ratingsByBookId/{id}")
- 	 	public ResponseEntity<List<Rating>> ratingsByBookId(
- 	 	        @PathVariable Long id,
- 	 	        @RequestParam(defaultValue = "0") int page,
- 	 	        @RequestParam(defaultValue = "10") int size) {
-
- 	 	    Pageable pageable = PageRequest.of(page, size);
- 	 	    Book book = bookService.bookPerId(id);
- 	 	    Page<Rating> ratings = ratingService.getAllPaginatedRatingsByBook(book, pageable);
- 	 	    List<Rating> pageRatings = ratings.getContent().stream().collect(Collectors.toList());
-
- 	 	    return new ResponseEntity<>(pageRatings, HttpStatus.OK);
- 	 	}*/
- 	 	
- 	 	@GetMapping("/ratingsByBookId/{id}")
- 	 	public ResponseEntity<List<Rating>> ratingsByBookId(
- 	 	        @PathVariable Long id,
- 	 	        @RequestParam(defaultValue = "0") int page,
- 	 	        @RequestParam(defaultValue = "10") int size) {
-
- 	 	    Pageable pageable = PageRequest.of(page, size);
- 	 	    Page<Rating> ratings = ratingService.getAllPaginatedRatingsByBookId(id, pageable);
- 	 	    List<Rating> pageRatings = ratings.getContent().stream().collect(Collectors.toList());
-
- 	 	    return new ResponseEntity<>(pageRatings, HttpStatus.OK);
- 	 	}
- 	 	
  	public User getUserToken() {
     	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username = ((UserDetails)auth.getPrincipal()).getUsername();
         User user = userSerice.getUser(username);
         return user;
     }
+ 	
+ 	@GetMapping("/book/{id}")
+	public List<Rating> ratingsByBook(@PathVariable Long id) {
+		return ratingService.getAllRatingsByBook(id);
+	}
+ 	
+ 	
 }

@@ -47,6 +47,9 @@ public class Reservation {
 
 
 
+	
+
+
 	public Reservation(Long id, Date requestDate, Date returnDate, User user, Book book) {
 		this.id = id;
 		this.requestDate = requestDate;
@@ -122,6 +125,17 @@ public class Reservation {
 		return "Reservation [id=" + id + ", requestDate=" + requestDate + ", returnDate=" + returnDate + ", user="
 				+ user + ", book=" + book + "]";
 	}
+	
+	public List<Rating> getRatings() {
+		return ratings;
+	}
+
+
+
+	public void setRatings(List<Rating> ratings) {
+		this.ratings = ratings;
+	}
+
 
 	
 }

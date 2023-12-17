@@ -1,5 +1,6 @@
 package ejercicios.controller;
 
+import java.sql.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,8 +22,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import ejercicios.dto.Book;
 import ejercicios.dto.Reservation;
 import ejercicios.dto.User;
+import ejercicios.service.BookServiceImpl;
 import ejercicios.service.ReservationServiceImpl;
 import ejercicios.service.UserServiceImpl;
 
@@ -35,6 +38,9 @@ public class ReservationController {
 	
 	@Autowired
 	UserServiceImpl userSerice;
+	
+	@Autowired
+	BookServiceImpl bookService;
 		
 	//ONLY ADMIN USE
 	@GetMapping("/all")
@@ -55,11 +61,34 @@ public class ReservationController {
 	}
 	
 	//ONLY REGISTERED USER
+    @PostMapping("/add")
+    public ResponseEntity<Reservation> insertReservation(@PathVariable Long bookId) {
+    	Book book = bookService.bookPerId(bookId);
+
+        if (book.getReserved() == 0 && "Available".equals(book.getBookingStatus())) {
+            Reservation reservation = new Reservation();
+            reservation.setBook(book);
+            reservation.setUser(getUserToken());
+            reservation.setRequestDate(new Date(bookId));
+
+            book.setReserved(1);
+            book.setBookingStatus("Reserved");
+
+            reservationService.updateReservation(reservation);
+            bookService.updateBook(book);
+
+            return new ResponseEntity<>(reservation, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+	
+	/*//ONLY REGISTERED USER
 	@PostMapping("/add")
 	public Reservation insertReservation(@RequestBody Reservation Reservation) {
 		Reservation.setUser(getUserToken());
 		return reservationService.updateReservation(Reservation);
-	}
+	}*/
 	
 	//ONLY REGISTERED USER
 	@PutMapping("/update/{id}")

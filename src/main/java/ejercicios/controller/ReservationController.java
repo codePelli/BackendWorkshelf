@@ -143,7 +143,7 @@ public class ReservationController {
     }
     
 	@GetMapping("/reservesByUserId")
-	public ResponseEntity<List<Reservation>> listByUserId(
+	public ResponseEntity<List<Reservation>> listByUserId(@PathVariable Long id,
 			@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
 
 		Page<Reservation> resvId = reservationService.getReservesByUser(getUserToken(), PageRequest.of(page, size));

@@ -62,7 +62,7 @@ public class ReservationController {
 	
 	//ONLY REGISTERED USER
     @PostMapping("/add")
-    public ResponseEntity<Reservation> insertReservation(@RequestBody Long bookId) {
+    public ResponseEntity<Reservation> insertReservation(@PathVariable(name = "id") Long bookId) {
     	Book book = bookService.bookPerId(bookId);
 
         if (book.getReserved() == 0 && "Available".equals(book.getBookingStatus())) {

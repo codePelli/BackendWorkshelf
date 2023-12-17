@@ -48,7 +48,7 @@ public class Book {
 	private List<Reservation> reservations;
 
 
-	public Book(Long id, String title, String image, String author, String bookingStatus, int reserved, Date reservationDate,
+	public Book(Long id, String title, String image, String author, String bookingStatus, int reserved,
 			int reservationDuration, User user, Editorial editorial) {
 		this.id = id;
 		this.title = title;

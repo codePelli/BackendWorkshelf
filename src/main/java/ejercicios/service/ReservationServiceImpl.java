@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import ejercicios.dao.ReservationDAO;
 import ejercicios.dto.Reservation;
+import ejercicios.dto.User;
 
 @Service
 public class ReservationServiceImpl implements IReservationService{
@@ -56,6 +57,12 @@ public class ReservationServiceImpl implements IReservationService{
 	public Page<Reservation> getPaginatedReservation(Pageable pageable) {
 		// TODO Auto-generated method stub
 		return ReservationsDAO.findAll(pageable);
+	}
+	
+	@Override
+	public Page<Reservation> getReservesByUser (User user, Pageable pageable) {
+		// TODO Auto-generated method stub
+		return ReservationsDAO.findAllByUser(user, pageable);
 	}
 
 }

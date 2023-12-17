@@ -4,11 +4,13 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import ejercicios.dao.IBookDAO;
 import ejercicios.dto.Book;
+import ejercicios.dto.User;
 
 @Service
 public class BookServiceImpl implements IBookService{
@@ -50,4 +52,11 @@ public class BookServiceImpl implements IBookService{
 		// TODO Auto-generated method stub
 		return bookDAO.findAllByTitleContainingIgnoreCase(title, pageable);
 	}
+	
+	@Override
+	public Page<Book> getBookByUserId(User user, Pageable pageable) {
+		// TODO Auto-generated method stub
+		return bookDAO.findAllByUser(user, pageable);
+	}
+
 }

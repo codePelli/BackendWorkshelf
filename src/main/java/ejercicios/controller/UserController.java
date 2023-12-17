@@ -8,6 +8,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,8 +32,8 @@ public class UserController {
 	@Autowired
 	private UserServiceImpl userService;
 	
-	//For getting user token
-	private LibraryUserDetails getToken;
+	@Autowired
+	UserServiceImpl userSerice;
 	
 	//ONLY ADMIN USE
 	@GetMapping("/all")
@@ -40,7 +43,7 @@ public class UserController {
 	
 	@GetMapping("/detail/{id}")
 	public ResponseEntity<User> userPerId(@PathVariable Long id) {
-		if (getToken.getUserToken().getUserId().equals(id)) {	
+		if (getUserToken().getUserId().equals(id)) {	
 			return new ResponseEntity<>(userService.userPerId(id), HttpStatus.OK);
 		}
 		else {
@@ -57,7 +60,7 @@ public class UserController {
 	//ONLY REGISTERED USER
 	@PutMapping("/update/{id}")
 	public ResponseEntity<User> updateUser(@PathVariable(name = "id") Long id, @RequestBody User user) {
-		if (getToken.getUserToken().getUserId().equals(id)) {
+		if (getUserToken().getUserId().equals(id)) {
 			User userSelected = userService.userPerId(id);
 			
 			userSelected.setUsername(user.getUsername());
@@ -76,14 +79,12 @@ public class UserController {
 	//ONLY ADMIN USE
 	@DeleteMapping("/delete/{id}")
 	public void deleteUser(@PathVariable Long id) {
-		if (getToken.getUserToken().getUserId() == id) {
-			userService.deleteUser(id);
-		}
+		userService.deleteUser(id);
 	}
 	
 	@GetMapping("/byUsername")
     public ResponseEntity<User> getByUsername(@RequestParam(name = "username") String username) {
-		if (getToken.getUserToken().getUsername().equals(username)) {
+		if (getUserToken().getUsername().equals(username)) {
 			return new ResponseEntity<>(userService.userByUsername(username), HttpStatus.OK);
 		}
 		else {
@@ -103,7 +104,22 @@ public class UserController {
 
         return new ResponseEntity<>(userDTOs, HttpStatus.OK);
     }
-
+    
+	@GetMapping("/byEmail")
+    public ResponseEntity<User> byEmail(@RequestParam(name = "email") String email) {
+		if (getUserToken().getEmail().equals(email)) {
+			return new ResponseEntity<>(userService.getUser(email), HttpStatus.OK);
+		}
+		else {
+			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+		}
+    }
 	
+	public User getUserToken() {
+    	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = ((UserDetails)auth.getPrincipal()).getUsername();
+        User user = userSerice.getUser(username);
+        return user;
+    }
 
 }

@@ -67,7 +67,6 @@ public class BookController {
 			bookSelected.setAuthor(book.getAuthor());
 			bookSelected.setBookingStatus(book.getBookingStatus());
 			bookSelected.setReserved(book.getReserved());
-			bookSelected.setReservationDate(book.getReservationDate());
 			bookSelected.setReservationDuration(book.getReservationDuration());
 			bookSelected.setUser(getUserToken());
 			bookSelected.setEditorial(book.getEditorial());
@@ -117,6 +116,16 @@ public class BookController {
 		List<Book> bookDTOs = bookPage.getContent().stream().collect(Collectors.toList());
 
 		return new ResponseEntity<>(bookDTOs, HttpStatus.OK);
+	}
+	
+	@GetMapping("/bookByUserId")
+	public ResponseEntity<List<Book>> listByUserId(
+			@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
+
+		Page<Book> resvId = bookService.getBookByUserId(getUserToken(), PageRequest.of(page, size));
+		List<Book> pageId = resvId.getContent().stream().collect(Collectors.toList());
+
+		return new ResponseEntity<>(pageId, HttpStatus.OK);
 	}
 	
 	public User getUserToken() {

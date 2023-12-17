@@ -31,8 +31,7 @@ public class Book {
 	private String author;
 	private String bookingStatus;
 	private int reserved;
-	private Date reservationDate;
-	private Date reservationDuration;
+	private int reservationDuration;
 
 	@ManyToOne
 	@JsonIgnoreProperties("book")
@@ -50,14 +49,13 @@ public class Book {
 
 
 	public Book(Long id, String title, String image, String author, String bookingStatus, int reserved, Date reservationDate,
-			Date reservationDuration, User user, Editorial editorial) {
+			int reservationDuration, User user, Editorial editorial) {
 		this.id = id;
 		this.title = title;
 		this.image = image;
 		this.author = author;
 		this.bookingStatus = bookingStatus;
 		this.reserved = reserved;
-		this.reservationDate = reservationDate;
 		this.reservationDuration = reservationDuration;
 		this.user = user;
 		this.editorial = editorial;
@@ -129,22 +127,12 @@ public class Book {
 	}
 
 
-	public Date getReservationDate() {
-		return reservationDate;
-	}
-
-
-	public void setReservationDate(Date reservationDate) {
-		this.reservationDate = reservationDate;
-	}
-
-
-	public Date getReservationDuration() {
+	public int getReservationDuration() {
 		return reservationDuration;
 	}
 
 
-	public void setReservationDuration(Date reservationDuration) {
+	public void setReservationDuration(int reservationDuration) {
 		this.reservationDuration = reservationDuration;
 	}
 

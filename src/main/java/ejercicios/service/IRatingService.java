@@ -11,7 +11,7 @@ public interface IRatingService {
 	
 	public List<Rating> getRatings();
 
-	public Rating RatingPerId(Long id);
+	public Rating ratingPerId(Long id);
 
 	public Rating saveRating(Rating Rating);
 

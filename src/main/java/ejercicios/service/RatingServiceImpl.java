@@ -1,64 +1,91 @@
 package ejercicios.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import ejercicios.dao.RatingDAO;
+import ejercicios.dto.Book;
 import ejercicios.dto.Rating;
+import ejercicios.dto.Reservation;
 
 @Service
 public class RatingServiceImpl implements IRatingService{
 	
 	@Autowired
-	RatingDAO RatingsDAO;
+	RatingDAO ratingsDAO;
+	
+	@Autowired
+	ReservationServiceImpl reservationService;
 
 	@Override
 	public List<Rating> getRatings() {
 		// TODO Auto-generated method stub
-		return RatingsDAO.findAll();
+		return ratingsDAO.findAll();
 	}
 
 	@Override
-	public Rating RatingPerId(Long id) {
+	public Rating ratingPerId(Long id) {
 		// TODO Auto-generated method stub
-		return RatingsDAO.findById(id).get();
+		return ratingsDAO.findById(id).get();
 	}
 
 	@Override
 	public Rating saveRating(Rating id) {
 		// TODO Auto-generated method stub
-		return RatingsDAO.save(id);
+		return ratingsDAO.save(id);
 	}
 
 	@Override
 	public Rating updateRating(Rating id) {
 		// TODO Auto-generated method stub
-		return RatingsDAO.save(id);
+		return ratingsDAO.save(id);
 	}
 
 	@Override
 	public void deleteRating(Long id) {
 		// TODO Auto-generated method stub
-		RatingsDAO.deleteById(id);
+		ratingsDAO.deleteById(id);
 	}
 	
 	public List<Rating> ratingsByScore(int score) {
-        return RatingsDAO.findAllByScore(score);
+        return ratingsDAO.findAllByScore(score);
     }
 
 	@Override
 	public Page<Rating> getPaginatedRating(Pageable pageable) {
 		// TODO Auto-generated method stub
-		return RatingsDAO.findAll(pageable);
+		return ratingsDAO.findAll(pageable);
 	}
 	
 	public Page<Rating> searchRatingByScore(Integer rating, Pageable pageable) {
 		// TODO Auto-generated method stub
-		return RatingsDAO.findAllByScore(rating, pageable);
+		return ratingsDAO.findAllByScore(rating, pageable);
+	}
+	
+	
+	public List<Rating> getRatingByReservation(Reservation reservation) {
+		return ratingsDAO.findByReservationId(reservation);
+	}
+	
+	public Page<Rating> getAllPaginatedRatingsByBook(Book book, Pageable pageable) {
+	    List<Reservation> reservations = reservationService.getAllReservesByBook(book);
+	    List<Rating> ratings = new ArrayList<>();
+
+	    for (Reservation reservation : reservations) {
+	        List<Rating> ratingsPerReservation = this.getRatingByReservation(reservation);
+	        ratings.addAll(ratingsPerReservation);
+	    }
+
+	    int start = (int) pageable.getOffset();
+	    int end = (start + pageable.getPageSize()) > ratings.size() ? ratings.size() : (start + pageable.getPageSize());
+
+	    return new PageImpl<>(ratings.subList(start, end), pageable, ratings.size());
 	}
 
 }

@@ -122,7 +122,7 @@ public class ReservationController {
 			@PathVariable Long id,
 			@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
 
-		Page<Reservation> resvId = reservationService.getReservesByBook(bookService.bookPerId(id), PageRequest.of(page, size));
+		Page<Reservation> resvId = reservationService.getReservesByBookPaginated(bookService.bookPerId(id), PageRequest.of(page, size));
 		List<Reservation> pageId = resvId.getContent().stream().collect(Collectors.toList());
 
 		return new ResponseEntity<>(pageId, HttpStatus.OK);

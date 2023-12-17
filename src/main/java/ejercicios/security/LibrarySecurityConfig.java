@@ -71,7 +71,7 @@ public class LibrarySecurityConfig {
             "/login/**",
             "/swagger-ui",
             "/swagger-ui/**",
-            "/reserveByBookId/**"
+            "/reservation/reserveByBookId/**"
 
     };
 

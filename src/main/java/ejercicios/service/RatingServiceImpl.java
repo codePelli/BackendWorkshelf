@@ -78,22 +78,22 @@ public class RatingServiceImpl implements IRatingService{
 		return ratingsDAO.findByReservationId(reservation);
 	}
 	
-	/*public Page<Rating> getAllPaginatedRatingsByBook(Book book, Pageable pageable) {
+	public Page<Rating> getAllPaginatedRatingsByBookId(Long bookId, Pageable pageable) {
+	    Book book = bookService.bookPerId(bookId);
 	    List<Reservation> reservations = reservationService.getAllReservesByBook(book);
-	    List<Rating> ratings = new ArrayList<>();
 
-	    for (Reservation reservation : reservations) {
-	        List<Rating> ratingsPerReservation = this.getRatingByReservation(reservation);
-	        ratings.addAll(ratingsPerReservation);
-	    }
+	    List<Rating> ratings = reservations.stream()
+	            .flatMap(reservation -> getRatingByReservation(reservation).stream())
+	            .collect(Collectors.toList());
 
 	    int start = (int) pageable.getOffset();
 	    int end = (start + pageable.getPageSize()) > ratings.size() ? ratings.size() : (start + pageable.getPageSize());
 
 	    return new PageImpl<>(ratings.subList(start, end), pageable, ratings.size());
-	}*/
+	}
+
 	
-    public Page<Rating> getAllPaginatedRatingsByBookId(Long bookId, Pageable pageable) {
+	/* public Page<Rating> getAllPaginatedRatingsByBookId(Long bookId, Pageable pageable) {
         Book book = bookService.bookPerId(bookId);
         List<Reservation> reservations = reservationService.getAllReservesByBook(book);
 
@@ -102,7 +102,7 @@ public class RatingServiceImpl implements IRatingService{
                 .collect(Collectors.toList());
 
         return new PageImpl<>(ratings, pageable, ratings.size());
-    }
+    }*/
 
 }
 

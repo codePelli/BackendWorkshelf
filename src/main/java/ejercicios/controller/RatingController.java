@@ -144,16 +144,14 @@ public class RatingController {
  	 	}*/
  	 	
  	 	@GetMapping("/ratingsByBookId/{id}")
- 	 	public ResponseEntity<List<Rating>> ratingsByBookId(
+ 	 	public ResponseEntity<Page<Rating>> ratingsByBookId(
  	 	        @PathVariable Long id,
  	 	        @RequestParam(defaultValue = "0") int page,
  	 	        @RequestParam(defaultValue = "10") int size) {
 
- 	 	    Pageable pageable = PageRequest.of(page, size);
- 	 	    Page<Rating> ratings = ratingService.getAllPaginatedRatingsByBookId(id, pageable);
- 	 	    List<Rating> pageRatings = ratings.getContent().stream().collect(Collectors.toList());
-
- 	 	    return new ResponseEntity<>(pageRatings, HttpStatus.OK);
+ 	 	    Page<Rating> ratings = ratingService.getAllPaginatedRatingsByBookId(id, PageRequest.of(page, size));
+ 	 	    
+ 	 	    return new ResponseEntity<>(ratings, HttpStatus.OK);
  	 	}
  	 	
  	public User getUserToken() {

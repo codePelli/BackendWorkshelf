@@ -56,9 +56,8 @@ public class BookServiceImpl implements IBookService{
 		return bookDAO.findAllByUser(user, pageable);
 	}
 	
-	/*
-	public List<Book> getBookListByUserId(User user) {
+	public List<Book> getBookListByUserId(Long user) {
 		return bookDAO.findListByUserId(user);
-	}*/
+	}
 
 }

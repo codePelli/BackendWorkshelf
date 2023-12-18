@@ -41,7 +41,7 @@ public class Book {
 	private int reservationDuration;
 
 	@ManyToOne
-	@JsonIgnoreProperties("book")
+	@JsonIgnoreProperties("books")
 	@JoinColumn(name = "ownerId")
 	private User user;
 	

@@ -26,6 +26,9 @@ public class ReservationServiceImpl implements IReservationService {
 
 	@Autowired
 	BookServiceImpl bookServiceImpl;
+	
+	@Autowired
+	UserServiceImpl userServiceImpl;
 
 	@Override
 	public List<Reservation> getReservations() {
@@ -67,7 +70,6 @@ public class ReservationServiceImpl implements IReservationService {
 	}
 
 	public Page<Reservation> getReservesByBookPaginated(Book bookPerId, Pageable pageable) {
-		// TODO Auto-generated method stub
 		return reservationsDAO.findReservesByBook(bookPerId, pageable);
 	}
 
@@ -76,15 +78,14 @@ public class ReservationServiceImpl implements IReservationService {
 	}
 
 	 public Page<Reservation> getMyBooksReservations(User userId, Pageable pageable) {
-	        Page<Book> books = bookServiceImpl.getBookByUserId(userId, pageable);
-			List<Book> bookList = books.getContent().stream().collect(Collectors.toList());
-	        List<Reservation> allReservations = new ArrayList<>();
+        List<Book> books = bookServiceImpl.getBookListByUserId(userId.getUserId());
+        List<Reservation> allReservations = new ArrayList<>();
 
-	        for (Book book : bookList) {
-	            Page<Reservation> reservationsPerBook = getReservesByBookPaginated(book, pageable);
-	            allReservations.addAll(reservationsPerBook.getContent());
-	        }
-	        
-	        return new PageImpl<>(allReservations, pageable, allReservations.size());
+        for (Book book : books) {
+            Page<Reservation> reservationsPerBook = getReservesByBookPaginated(book, pageable);
+            allReservations.addAll(reservationsPerBook.getContent());
+        }
+        
+        return new PageImpl<>(allReservations, pageable, allReservations.size());
     }
 }

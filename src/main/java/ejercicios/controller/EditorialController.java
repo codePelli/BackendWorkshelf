@@ -55,6 +55,7 @@ public class EditorialController {
 		
 		Editorial editorialSelected = new Editorial();
 		
+		editorialSelected =  editorialService.editorialPerId(id);
 		editorialSelected.setEditorialName(editorial.getEditorialName());
 		
 		return editorialSelected;

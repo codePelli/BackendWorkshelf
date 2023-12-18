@@ -77,9 +77,9 @@ public class ReservationController {
 			Reservation reservationSelected = new Reservation();
 			
 			reservationSelected= reservationService.ReservationPerId(id);
-			Reservation.getBook().setReserved(0);
-			bookService.updateBook(Reservation.getBook());
-			reservationSelected.setBook(Reservation.getBook());
+			reservationSelected.getBook().setReserved(0);
+			bookService.updateBook(reservationSelected.getBook());
+			reservationSelected.setBook(reservationSelected.getBook());
 			
 			reservationSelected = reservationService.updateReservation(reservationSelected);
 			

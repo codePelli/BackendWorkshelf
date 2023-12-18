@@ -65,7 +65,6 @@ public class BookController {
 
 			bookSelected.setTitle(book.getTitle());
 			bookSelected.setAuthor(book.getAuthor());
-			bookSelected.setBookingStatus(book.getBookingStatus());
 			bookSelected.setReserved(book.getReserved());
 			bookSelected.setReservationDuration(book.getReservationDuration());
 			//EXPLICAR

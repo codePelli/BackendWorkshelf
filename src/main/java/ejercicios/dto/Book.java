@@ -1,6 +1,14 @@
 package ejercicios.dto;
 
 import java.util.Date;
+
+/*
+ * RESERVED 0 = AVAILABLE
+ * RESERVED 1 = RESERVED
+ * RESERVED 2 = LOST
+ * RESERVED 3 = NOT AVAILABLE
+ */
+
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -29,7 +37,6 @@ public class Book {
 	private String title;
 	private String image;
 	private String author;
-	private String bookingStatus;
 	private int reserved;
 	private int reservationDuration;
 
@@ -48,13 +55,12 @@ public class Book {
 	private List<Reservation> reservations;
 
 
-	public Book(Long id, String title, String image, String author, String bookingStatus, int reserved,
+	public Book(Long id, String title, String image, String author, int reserved,
 			int reservationDuration, User user, Editorial editorial) {
 		this.id = id;
 		this.title = title;
 		this.image = image;
 		this.author = author;
-		this.bookingStatus = bookingStatus;
 		this.reserved = reserved;
 		this.reservationDuration = reservationDuration;
 		this.user = user;
@@ -104,16 +110,6 @@ public class Book {
 
 	public void setAuthor(String author) {
 		this.author = author;
-	}
-
-
-	public String getBookingStatus() {
-		return bookingStatus;
-	}
-
-
-	public void setBookingStatus(String bookingStatus) {
-		this.bookingStatus = bookingStatus;
 	}
 
 

@@ -76,5 +76,9 @@ public class ReservationServiceImpl implements IReservationService{
 		// TODO Auto-generated method stub
 		return reservationsDAO.findReservesByBook(bookPerId, pageable);
 	}
+	
+	public Page<Reservation> getReservesByUserId(User userId, Pageable pageable){
+		return reservationsDAO.findReservesByUser(userId, pageable);
+	}
 }
 

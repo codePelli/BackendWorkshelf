@@ -14,7 +14,9 @@ import ejercicios.dto.User;
 
 @Repository
 public interface ReservationDAO extends JpaRepository<Reservation,Long>{
+	
 	List<Reservation> findAllByReturnDate(Date returnDate);
+	
 	Reservation findById(int id);
 	
 	List<Reservation>findByBookId(Book book);
@@ -22,5 +24,7 @@ public interface ReservationDAO extends JpaRepository<Reservation,Long>{
 	<T> Page<T> findAllByUser(User user, Pageable pageable);
 	
 	<T> Page<T> findReservesByBook(Book book, Pageable pageable);
+	
+	Page<Reservation> findReservesByUser(User userId, Pageable pageable);
 
 }

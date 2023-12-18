@@ -45,11 +45,6 @@ public class Reservation {
 	public Reservation() {
 	}
 
-
-
-	
-
-
 	public Reservation(Long id, Date requestDate, Date returnDate, User user, Book book) {
 		this.id = id;
 		this.requestDate = requestDate;
@@ -57,8 +52,6 @@ public class Reservation {
 		this.user = user;
 		this.book = book;
 	}
-
-
 
 	public Long getId() {
 		return id;

@@ -68,7 +68,7 @@ public class BookController {
 			bookSelected.setBookingStatus(book.getBookingStatus());
 			bookSelected.setReserved(book.getReserved());
 			bookSelected.setReservationDuration(book.getReservationDuration());
-			bookSelected.setUser(getUserToken());
+			//bookSelected.setUser(getUserToken());
 			bookSelected.setEditorial(book.getEditorial());
 
 			bookSelected = bookService.updateBook(bookSelected);

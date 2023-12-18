@@ -3,6 +3,7 @@ package ejercicios.service;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -75,10 +76,11 @@ public class ReservationServiceImpl implements IReservationService {
 	}
 
 	 public Page<Reservation> getMyBooksReservations(User userId, Pageable pageable) {
-	        List<Book> books = bookServiceImpl.getBookListByUserId(userId);
+	        Page<Book> books = bookServiceImpl.getBookByUserId(userId, pageable);
+			List<Book> bookList = books.getContent().stream().collect(Collectors.toList());
 	        List<Reservation> allReservations = new ArrayList<>();
 
-	        for (Book book : books) {
+	        for (Book book : bookList) {
 	            Page<Reservation> reservationsPerBook = getReservesByBookPaginated(book, pageable);
 	            allReservations.addAll(reservationsPerBook.getContent());
 	        }

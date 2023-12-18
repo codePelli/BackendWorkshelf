@@ -82,7 +82,7 @@ public class ReservationServiceImpl implements IReservationService {
 
 	        for (Book book : bookList) {
 	            Page<Reservation> reservationsPerBook = getReservesByBookPaginated(book, pageable);
-	            allReservations.addAll(reservationsPerBook.getContent());
+	            allReservations.addAll(reservationsPerBook.getContent().stream().collect(Collectors.toList()));
 	        }
 	        
 	        return new PageImpl<>(allReservations, pageable, allReservations.size());

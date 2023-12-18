@@ -57,7 +57,7 @@ public class BookController {
 	
 	//FOR REGISTERED USE
 	@PutMapping("/update/{id}")
-	public ResponseEntity<Book> setReservation(@PathVariable(name = "id") Long id, @RequestBody Book book) {
+	public ResponseEntity<Book> updateBook(@PathVariable(name = "id") Long id, @RequestBody Book book) {
 		if (getUserToken().getUserId().equals(bookService.bookPerId(id).getUser().getUserId())) {
 			Book bookSelected = new Book();
 
@@ -70,33 +70,6 @@ public class BookController {
 			bookSelected.setReservationDuration(book.getReservationDuration());
 			//EXPLICAR
 			//bookSelected.setUser(getUserToken());
-			bookSelected.setEditorial(book.getEditorial());
-
-			bookSelected = bookService.updateBook(bookSelected);
-
-			return new ResponseEntity<>(bookSelected, HttpStatus.OK);
-		}
-		else {
-			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-		}
-		
-	}
-	
-	
-	//FOR REGISTERED USE
-	@PutMapping("/update/{id}")
-	public ResponseEntity<Book> updateBook(@PathVariable(name = "id") Long id, @RequestBody Book book) {
-		if (getUserToken().getUserId().equals(bookService.bookPerId(id).getUser().getUserId())) {
-			Book bookSelected = new Book();
-
-			bookSelected = bookService.bookPerId(id);
-
-			bookSelected.setTitle(book.getTitle());
-			bookSelected.setAuthor(book.getAuthor());
-			bookSelected.setBookingStatus(book.getBookingStatus());
-			bookSelected.setReserved(book.getReserved());
-			bookSelected.setReservationDuration(book.getReservationDuration());
-			bookSelected.setUser(getUserToken());
 			bookSelected.setEditorial(book.getEditorial());
 
 			bookSelected = bookService.updateBook(bookSelected);

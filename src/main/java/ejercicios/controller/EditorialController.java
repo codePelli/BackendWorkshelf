@@ -54,11 +54,11 @@ public class EditorialController {
 	public Editorial updateEditorial(@PathVariable(name = "id") Long id, @RequestBody Editorial editorial) {
 		
 		Editorial editorialSelected = new Editorial();
-		
 		editorialSelected =  editorialService.editorialPerId(id);
+		
 		editorialSelected.setEditorialName(editorial.getEditorialName());
 		
-		return editorialService.updateEditorial(editorial);
+		return editorialService.updateEditorial(editorialSelected);
 	}
 	
 	//FOR ADMIN USE

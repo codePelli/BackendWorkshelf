@@ -138,8 +138,8 @@ public class ReservationController {
         return user;
     }
     
-    @GetMapping("/test")
-	public ResponseEntity<List<Reservation>> test(
+    @GetMapping("/bookSharing")
+	public ResponseEntity<List<Reservation>> getBookSharingHistory(
 			@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
 
 		Page<Reservation> resvId = reservationService.getMyBooksReservations(getUserToken(), PageRequest.of(page, size));

@@ -64,6 +64,8 @@ public class ReservationController {
 	@PostMapping("/add")
 	public Reservation insertReservation(@RequestBody Reservation Reservation) {
 		Reservation.setUser(getUserToken());
+		Reservation.getBook().setReserved(1);
+		bookService.updateBook(Reservation.getBook());
 		return reservationService.updateReservation(Reservation);
 	}
 	
@@ -79,6 +81,9 @@ public class ReservationController {
 			reservationSelected.setRequestDate(Reservation.getRequestDate());
 			reservationSelected.setReturnDate(Reservation.getReturnDate());
 			reservationSelected.setUser(Reservation.getUser());
+			
+			Reservation.getBook().setReserved(0);
+			bookService.updateBook(Reservation.getBook());
 			reservationSelected.setBook(Reservation.getBook());
 			
 			reservationSelected = reservationService.updateReservation(reservationSelected);

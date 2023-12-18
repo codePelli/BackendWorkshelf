@@ -64,8 +64,8 @@ public class ReservationController {
 	@PostMapping("/add")
 	public Reservation insertReservation(@RequestBody Reservation Reservation) {
 		Reservation.setUser(getUserToken());
-		Reservation.getBook().setReserved(1);
-		bookService.updateBook(Reservation.getBook());
+		bookService.bookPerId(Reservation.getBook().getId()).setReserved(1);
+		bookService.updateBook(bookService.bookPerId(Reservation.getBook().getId()));
 		return reservationService.updateReservation(Reservation);
 	}
 	

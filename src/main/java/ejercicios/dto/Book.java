@@ -47,7 +47,7 @@ public class Book {
 	
 	@ManyToOne
 	@JsonIgnoreProperties("book")
-	@JoinColumn(name = "editorialName")
+	@JoinColumn(name = "editorialId")
 	private Editorial editorial;
 	
 	@JsonIgnore

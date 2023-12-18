@@ -137,4 +137,15 @@ public class ReservationController {
         User user = userSerice.getUser(username);
         return user;
     }
+    
+    @GetMapping("/test/{id}")
+	public ResponseEntity<List<Reservation>> test(
+			@PathVariable User id,
+			@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
+
+		Page<Reservation> resvId = reservationService.getMyBooksReservations(getUserToken(), PageRequest.of(page, size));
+		List<Reservation> pageId = resvId.getContent().stream().collect(Collectors.toList());
+
+		return new ResponseEntity<>(pageId, HttpStatus.OK);
+	}
 }

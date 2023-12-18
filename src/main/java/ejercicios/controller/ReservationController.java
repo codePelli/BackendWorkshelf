@@ -138,7 +138,7 @@ public class ReservationController {
         return user;
     }
     
-    @GetMapping("/user/book/all/reservation/all")
+    @GetMapping("/user-owned-books")
 	public ResponseEntity<List<Reservation>> getAllMyBooksReservations(
 			@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
 

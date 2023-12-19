@@ -75,7 +75,8 @@ public class LibrarySecurityConfig {
             "/reservation/reserveByBookId/**",
             "/rating/book/**",
             "/reserveByUserId",
-            "/reservation/test"
+            "/reservation/test",
+            "/reservation/reserveByBookIdNotPaginated/**"
     };
 
     @Bean

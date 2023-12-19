@@ -45,7 +45,6 @@ public class ReservationController {
 	//ONLY ADMIN USE
 	@GetMapping("/all")
 	public List<Reservation> getAllReservations(){
-		
 		return reservationService.getReservations();
 	}
 	
@@ -60,13 +59,11 @@ public class ReservationController {
 		}
 	}
 	
+	//@RequestBody Book book
 	//ONLY REGISTERED USER
 	@PostMapping("/add")
-	public Reservation insertReservation(@RequestBody Reservation Reservation) {
-		Reservation.setUser(getUserToken());
-		bookService.bookPerId(Reservation.getBook().getId()).setReserved(1);
-		bookService.updateBook(bookService.bookPerId(Reservation.getBook().getId()));
-		return reservationService.updateReservation(Reservation);
+	public Reservation insertReservation(@RequestBody Book book) {
+		return reservationService.addReservation(getUserToken(), book);
 	}
 	
 	//ONLY REGISTERED USER

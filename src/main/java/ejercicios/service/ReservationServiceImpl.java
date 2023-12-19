@@ -1,7 +1,9 @@
 package ejercicios.service;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -17,6 +19,8 @@ import ejercicios.dto.Book;
 import ejercicios.dto.Rating;
 import ejercicios.dto.Reservation;
 import ejercicios.dto.User;
+import jakarta.persistence.EntityManager;
+import jakarta.transaction.Transactional;
 
 @Service
 public class ReservationServiceImpl implements IReservationService {
@@ -29,6 +33,9 @@ public class ReservationServiceImpl implements IReservationService {
 	
 	@Autowired
 	UserServiceImpl userServiceImpl;
+	
+	@Autowired
+	EntityManager entityManager;
 
 	@Override
 	public List<Reservation> getReservations() {
@@ -87,5 +94,42 @@ public class ReservationServiceImpl implements IReservationService {
         }
         
         return new PageImpl<>(allReservations, pageable, allReservations.size());
+    }
+	 
+	 public Reservation addReservation(User user, Book book) {
+		 if(book.getReserved() == 0) {
+			Reservation reservation = new Reservation();
+			Integer reservationDays = book.getReservationDuration();
+			Date reservationStart = getCurrentDateTime();
+			Date returnDate = addDays(reservationStart, reservationDays);
+			
+				book.setReserved(1);
+			
+			reservation.setRequestDate(reservationStart);
+			reservation.setReturnDate(returnDate);
+			reservation.setUser(user);
+			reservation.setBook(book);
+			
+			List<Reservation> reservations = book.getReservations();
+			reservations.add(reservation);
+			book.setReservations(reservations);
+			bookServiceImpl.updateBook(book);
+			
+			return saveReservation(reservation);
+		 }
+		 return null;
+	 }
+	 
+	 private static Date addDays(Date date, int days) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.add(Calendar.DAY_OF_YEAR, days);
+        return calendar.getTime();
+    }
+	 
+	 public static Date getCurrentDateTime() {
+	 	Date fecha = new Date();
+        long unaHoraEnMilisegundos = 3600000;
+        return new Date(fecha.getTime() + unaHoraEnMilisegundos);
     }
 }

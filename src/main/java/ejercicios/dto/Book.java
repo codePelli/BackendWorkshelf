@@ -1,5 +1,6 @@
 package ejercicios.dto;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 /*
@@ -53,7 +54,7 @@ public class Book {
 	
 	@JsonIgnore
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<Reservation> reservations;
+	private List<Reservation> reservations = new ArrayList<>();
 
 
 	public Book(Long id, String title, String image, String author, String genre, int reserved,

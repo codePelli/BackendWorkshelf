@@ -129,8 +129,8 @@ public class BookController {
 		return new ResponseEntity<>(pageId, HttpStatus.OK);
 	}
 	
-	@GetMapping("/byGenre/{genre}")
-	public ResponseEntity<List<Book>> listByGenre(@PathVariable(name = "genre") String genre,
+	@GetMapping("/byGenre")
+	public ResponseEntity<List<Book>> listByGenre(@RequestParam(name = "genre") String genre,
 			@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
 		
 		Page<Book> bookPage = bookService.getBooksByGenre(genre, PageRequest.of(page, size));

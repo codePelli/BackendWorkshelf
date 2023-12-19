@@ -8,8 +8,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import ejercicios.dto.Book;
-import ejercicios.dto.Rating;
-import ejercicios.dto.Reservation;
 import ejercicios.dto.User;
 
 @Repository
@@ -19,7 +17,7 @@ public interface IBookDAO  extends JpaRepository<Book, Long> {
 	
 	List<Book> findListByUserId(Long userId);
 	
-	List<Book> findByGenre(String genre);
+	<T> Page<T> findByGenre(String genre, Pageable pageable);
 	
 	<T> Page<T> findAllByTitleContainingIgnoreCase(String title, Pageable pageable);
 	<T> Page<T> findAllByUser(User user, Pageable pageable);

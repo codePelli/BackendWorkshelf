@@ -22,8 +22,6 @@ public interface IBookService {
 	
 	public Book bookPerName(String name);
 	
-	List<Book> getBooksByGenre(String genre);
-	
     Page<Book> getPaginatedBook(Pageable pageable);
     
 	Page<Book> getBookByUserId(User user, Pageable pageable);

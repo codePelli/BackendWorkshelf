@@ -130,9 +130,11 @@ public class BookController {
 	}
 	
 	@GetMapping("/byGenre/{genre}")
-	public ResponseEntity<List<Book>> listByGenre(@PathVariable(name = "genre") String genre) {
-
-		List<Book> booksByGenre = bookService.getBooksByGenre(genre);
+	public ResponseEntity<List<Book>> listByGenre(@PathVariable(name = "genre") String genre,
+			@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
+		
+		Page<Book> bookPage = bookService.getBooksByGenre(genre, PageRequest.of(page, size));
+		List<Book> booksByGenre = bookPage.getContent().stream().collect(Collectors.toList());
 
 	    if (booksByGenre.isEmpty()) {
 	        return new ResponseEntity<>(HttpStatus.NOT_FOUND);

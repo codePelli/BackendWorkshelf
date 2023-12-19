@@ -73,7 +73,8 @@ public class LibrarySecurityConfig {
             "/swagger-ui/**",
             "/reservation/reserveByBookId/**",
             "/rating/book/**",
-            "/reserveByUserId"
+            "/reserveByUserId",
+            "/reservation/update/**"
     };
 
     @Bean

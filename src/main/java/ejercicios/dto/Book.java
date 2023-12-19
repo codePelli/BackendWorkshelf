@@ -37,6 +37,7 @@ public class Book {
 	private String title;
 	private String image;
 	private String author;
+	private String genre;
 	private int reserved;
 	private int reservationDuration;
 
@@ -55,16 +56,27 @@ public class Book {
 	private List<Reservation> reservations;
 
 
-	public Book(Long id, String title, String image, String author, int reserved,
+	public Book(Long id, String title, String image, String author, String genre, int reserved,
 			int reservationDuration, User user, Editorial editorial) {
 		this.id = id;
 		this.title = title;
 		this.image = image;
 		this.author = author;
+		this.genre = genre;
 		this.reserved = reserved;
 		this.reservationDuration = reservationDuration;
 		this.user = user;
 		this.editorial = editorial;
+	}
+
+
+	public String getGenre() {
+		return genre;
+	}
+
+
+	public void setGenre(String genre) {
+		this.genre = genre;
 	}
 
 

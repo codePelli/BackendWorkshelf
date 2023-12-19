@@ -129,6 +129,18 @@ public class BookController {
 		return new ResponseEntity<>(pageId, HttpStatus.OK);
 	}
 	
+	@GetMapping("/byGenre/{genre}")
+	public ResponseEntity<List<Book>> listByGenre(@PathVariable(name = "genre") String genre) {
+
+		List<Book> booksByGenre = bookService.getBooksByGenre(genre);
+
+	    if (booksByGenre.isEmpty()) {
+	        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+	    } else {
+	        return new ResponseEntity<>(booksByGenre, HttpStatus.OK);
+	    }
+	}
+	
 	public User getUserToken() {
     	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username = ((UserDetails)auth.getPrincipal()).getUsername();

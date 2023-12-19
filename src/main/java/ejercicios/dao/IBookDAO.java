@@ -19,7 +19,9 @@ public interface IBookDAO  extends JpaRepository<Book, Long> {
 	
 	List<Book> findListByUserId(Long userId);
 	
+	List<Book> findByGenre(String genre);
+	
 	<T> Page<T> findAllByTitleContainingIgnoreCase(String title, Pageable pageable);
 	<T> Page<T> findAllByUser(User user, Pageable pageable);
-
+	
 }

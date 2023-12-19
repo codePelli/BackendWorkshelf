@@ -59,5 +59,10 @@ public class BookServiceImpl implements IBookService{
 	public List<Book> getBookListByUserId(Long user) {
 		return bookDAO.findListByUserId(user);
 	}
+	
+	@Override
+    public List<Book> getBooksByGenre(String genre) {
+        return bookDAO.findByGenre(genre);
+    }
 
 }

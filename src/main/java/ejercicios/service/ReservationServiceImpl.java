@@ -158,4 +158,9 @@ public class ReservationServiceImpl implements IReservationService {
 	 public Reservation getReservationByUserAndBook(Long userId, Long bookId) {
 	        return reservationsDAO.findByUserIdAndBookId(userId, bookId);
 	    }
+
+	public List<Reservation> getReservesByBook(Book bookPerId) {
+		
+		return reservationsDAO.findReservesByBook(bookPerId);
+	}
 }

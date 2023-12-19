@@ -118,6 +118,13 @@ public class ReservationController {
 		return new ResponseEntity<>(pageId, HttpStatus.OK);
 	}
 	
+	@GetMapping("/reserveByBookIdNotPaginated/{id}")
+	public ResponseEntity<List<Reservation>> listByBookIdNotPag(@PathVariable Long id) {
+		List<Reservation> resvId = reservationService.getReservesByBook(bookService.bookPerId(id));
+
+		return new ResponseEntity<>(resvId, HttpStatus.OK);
+	}
+	
 	@GetMapping("/reserveByUserId")
 	public ResponseEntity<List<Reservation>> reserveByUser(
 			@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {

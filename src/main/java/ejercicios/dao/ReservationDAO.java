@@ -28,5 +28,7 @@ public interface ReservationDAO extends JpaRepository<Reservation,Long>{
 	<T> Page<T> findReservesByBook(Book book, Pageable pageable);
 	
 	Page<Reservation> findReservesByUser(User userId, Pageable pageable);
+	
+	List<Reservation> findReservesByBook(Book book);
 
 }

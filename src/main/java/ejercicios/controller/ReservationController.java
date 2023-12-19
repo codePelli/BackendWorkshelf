@@ -61,12 +61,9 @@ public class ReservationController {
 	}
 	
 	//ONLY REGISTERED USER
-	@PostMapping("/add")
-	public Reservation insertReservation(@RequestBody Reservation Reservation) {
-		Reservation.setUser(getUserToken());
-		bookService.bookPerId(Reservation.getBook().getId()).setReserved(1);
-		bookService.updateBook(bookService.bookPerId(Reservation.getBook().getId()));
-		return reservationService.updateReservation(Reservation);
+	@PostMapping("/add/{bookId}")
+	public Reservation insertReservation(@PathVariable(name = "bookId") Long bookId) {
+		return reservationService.addReservation(getUserToken(), bookId);
 	}
 	
 	//ONLY REGISTERED USER

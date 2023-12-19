@@ -1,6 +1,7 @@
 package ejercicios.service;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -17,6 +18,7 @@ import ejercicios.dto.Book;
 import ejercicios.dto.Rating;
 import ejercicios.dto.Reservation;
 import ejercicios.dto.User;
+import jakarta.persistence.EntityManager;
 
 @Service
 public class ReservationServiceImpl implements IReservationService {
@@ -29,6 +31,9 @@ public class ReservationServiceImpl implements IReservationService {
 	
 	@Autowired
 	UserServiceImpl userServiceImpl;
+	
+	@Autowired
+	EntityManager entityManager;
 
 	@Override
 	public List<Reservation> getReservations() {
@@ -87,5 +92,33 @@ public class ReservationServiceImpl implements IReservationService {
         }
         
         return new PageImpl<>(allReservations, pageable, allReservations.size());
+    }
+	 
+	 
+	 public Reservation addReservation(User user, Long bookId) {
+		Reservation reservation = new Reservation();
+		Book book = bookServiceImpl.bookPerId(bookId);
+		Integer reservationDays = book.getReservationDuration();
+		Date reservationStart = new Date();
+		Date returnDate = addDays(reservationStart, reservationDays);
+		
+		if(book.getReserved() == 0)
+			book.setReserved(1);
+		
+		entityManager.persist(book);
+		
+		reservation.setRequestDate(reservationStart);
+		reservation.setReturnDate(returnDate);
+		reservation.setUser(user);
+		reservation.setBook(book);
+		
+		return saveReservation(reservation);
+	 }
+	 
+	 private static Date addDays(Date date, int days) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.add(Calendar.DAY_OF_YEAR, days);
+        return calendar.getTime();
     }
 }

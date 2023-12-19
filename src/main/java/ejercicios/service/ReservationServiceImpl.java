@@ -95,9 +95,8 @@ public class ReservationServiceImpl implements IReservationService {
     }
 	 
 	 
-	 public Reservation addReservation(User user, Long bookId) {
+	 public Reservation addReservation(User user, Book book) {
 		Reservation reservation = new Reservation();
-		Book book = bookServiceImpl.bookPerId(bookId);
 		Integer reservationDays = book.getReservationDuration();
 		Date reservationStart = new Date();
 		Date returnDate = addDays(reservationStart, reservationDays);

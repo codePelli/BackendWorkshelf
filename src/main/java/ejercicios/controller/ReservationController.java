@@ -45,7 +45,6 @@ public class ReservationController {
 	//ONLY ADMIN USE
 	@GetMapping("/all")
 	public List<Reservation> getAllReservations(){
-		
 		return reservationService.getReservations();
 	}
 	
@@ -61,9 +60,9 @@ public class ReservationController {
 	}
 	
 	//ONLY REGISTERED USER
-	@PostMapping("/add/{bookId}")
-	public Reservation insertReservation(@PathVariable(name = "bookId") Long bookId) {
-		return reservationService.addReservation(getUserToken(), bookId);
+	@PostMapping("/add")
+	public Reservation insertReservation(@RequestBody Book book) {
+		return reservationService.addReservation(getUserToken(), book);
 	}
 	
 	//ONLY REGISTERED USER

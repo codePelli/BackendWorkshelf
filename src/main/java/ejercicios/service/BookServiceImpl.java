@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -59,5 +58,9 @@ public class BookServiceImpl implements IBookService{
 	public List<Book> getBookListByUserId(Long user) {
 		return bookDAO.findListByUserId(user);
 	}
+	
+    public Page<Book> getBooksByGenre(String genre, Pageable pageable) {
+        return bookDAO.findByGenre(genre, pageable);
+    }
 
 }

@@ -99,7 +99,7 @@ public class ReservationServiceImpl implements IReservationService {
 			Date reservationStart = getCurrentDateTime();
 			Date returnDate = addDays(reservationStart, reservationDays);
 			
-			book.setReserved(ReservationStatus.AVAILABLE.getCode());
+			book.setReserved(ReservationStatus.RESERVED.getCode());
 			
 			reservation.setRequestDate(reservationStart);
 			reservation.setReturnDate(returnDate);
@@ -117,7 +117,7 @@ public class ReservationServiceImpl implements IReservationService {
 	 }
 	 
 	 public Reservation getLastBookReservationByUser(User user, Book book) {
-		List<Reservation> bookReservations = book.getReservations();
+		List<Reservation> bookReservations = reservationsDAO.findByBookId(book.getId());
 
 	    for (Reservation reservation : bookReservations) {
 	        if (reservation.getUser().equals(user)) {
@@ -135,10 +135,8 @@ public class ReservationServiceImpl implements IReservationService {
 		        Date returnDate = getCurrentDateTime();
 		        book.setReserved(ReservationStatus.AVAILABLE.getCode());
 		        reservation.setReturnDate(returnDate);
-
 		        bookServiceImpl.updateBook(book);
-
-		        return saveReservation(reservation);
+		        return updateReservation(reservation);
 		    }
 		 return null;
 	 }

@@ -3,24 +3,20 @@ package ejercicios.service;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import ejercicios.dao.ReservationDAO;
 import ejercicios.dto.Book;
-import ejercicios.dto.Rating;
 import ejercicios.dto.Reservation;
 import ejercicios.dto.User;
+import ejercicios.enums.ReservationStatus;
 import jakarta.persistence.EntityManager;
-import jakarta.transaction.Transactional;
 
 @Service
 public class ReservationServiceImpl implements IReservationService {
@@ -97,13 +93,13 @@ public class ReservationServiceImpl implements IReservationService {
     }
 	 
 	 public Reservation addReservation(User user, Book book) {
-		 if(book.getReserved() == 0) {
+		 if(book.getReserved() == ReservationStatus.AVAILABLE.getCode()) {
 			Reservation reservation = new Reservation();
 			Integer reservationDays = book.getReservationDuration();
 			Date reservationStart = getCurrentDateTime();
 			Date returnDate = addDays(reservationStart, reservationDays);
 			
-				book.setReserved(1);
+			book.setReserved(ReservationStatus.AVAILABLE.getCode());
 			
 			reservation.setRequestDate(reservationStart);
 			reservation.setReturnDate(returnDate);
@@ -119,6 +115,22 @@ public class ReservationServiceImpl implements IReservationService {
 		 }
 		 return null;
 	 }
+	 
+	 public Reservation processBookReturn(Reservation reservation) {
+		 Book book = reservation.getBook();
+		 
+		 if (book != null && book.getReserved() == ReservationStatus.RESERVED.getCode()) {
+		        Date returnDate = getCurrentDateTime();
+		        book.setReserved(ReservationStatus.AVAILABLE.getCode());
+		        reservation.setReturnDate(returnDate);
+
+		        bookServiceImpl.updateBook(book);
+
+		        return saveReservation(reservation);
+		    }
+		 return null;
+	 }
+	 
 	 
 	 private static Date addDays(Date date, int days) {
         Calendar calendar = Calendar.getInstance();

@@ -61,14 +61,14 @@ public class ReservationController {
 	
 	//@RequestBody Book book
 	//ONLY REGISTERED USER
-	@PostMapping("/add")
+	@PostMapping("/")
 	public Reservation insertReservation(@RequestBody Book book) {
 		return reservationService.addReservation(getUserToken(), book);
 	}
 	
 	//ONLY REGISTERED USER
 	@PutMapping("/update/{id}")
-	public ResponseEntity<Reservation> updateReservation(@PathVariable(name = "id") Long id, @RequestBody Reservation Reservation) {
+	public ResponseEntity<Reservation> updateReservation(@PathVariable(name = "id") Long id, @RequestBody Reservation reservation) {
 		
 		if (getUserToken().getUserId().equals(reservationService.ReservationPerId(id).getUser().getUserId())) {
 			Reservation reservationSelected = new Reservation();
@@ -143,5 +143,18 @@ public class ReservationController {
 		List<Reservation> pageId = resvId.getContent().stream().collect(Collectors.toList());
 
 		return new ResponseEntity<>(pageId, HttpStatus.OK);
+	}
+    
+    
+    @PutMapping("/book/return")
+	public ResponseEntity<Reservation> prcessBookReturn(@RequestBody Reservation reservation) {
+
+    	if (getUserToken().getUserId().equals(reservation.getUser().getUserId())) {
+    		reservationService.processBookReturn(reservation);
+			return new ResponseEntity<>(reservation, HttpStatus.OK);
+		}
+		else {
+			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+		}
 	}
 }

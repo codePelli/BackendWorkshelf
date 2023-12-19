@@ -116,6 +116,18 @@ public class ReservationServiceImpl implements IReservationService {
 		 return null;
 	 }
 	 
+	 public Reservation getLastBookReservationByUser(User user, Book book) {
+		List<Reservation> bookReservations = book.getReservations();
+
+	    for (Reservation reservation : bookReservations) {
+	        if (reservation.getUser().equals(user)) {
+	            return reservation;
+	        }
+	    }
+	    return null;
+	 }
+	 
+	 
 	 public Reservation processBookReturn(Reservation reservation) {
 		 Book book = reservation.getBook();
 		 

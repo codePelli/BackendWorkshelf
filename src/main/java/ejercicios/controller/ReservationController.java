@@ -61,7 +61,7 @@ public class ReservationController {
 	
 	//@RequestBody Book book
 	//ONLY REGISTERED USER
-	@PostMapping("/")
+	@PostMapping("/add")
 	public Reservation insertReservation(@RequestBody Book book) {
 		return reservationService.addReservation(getUserToken(), book);
 	}
@@ -147,7 +147,8 @@ public class ReservationController {
     
     
     @PutMapping("/book/return")
-	public ResponseEntity<Reservation> prcessBookReturn(@RequestBody Reservation reservation) {
+	public ResponseEntity<Reservation> processBookReturn(@RequestBody Book book) {
+    	Reservation reservation = reservationService.getLastBookReservationByUser(getUserToken(), book);
 
     	if (getUserToken().getUserId().equals(reservation.getUser().getUserId())) {
     		reservationService.processBookReturn(reservation);

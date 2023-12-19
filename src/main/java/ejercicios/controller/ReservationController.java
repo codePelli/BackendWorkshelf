@@ -59,6 +59,7 @@ public class ReservationController {
 		}
 	}
 	
+	//@RequestBody Book book
 	//ONLY REGISTERED USER
 	@PostMapping("/add")
 	public Reservation insertReservation(@RequestBody Book book) {

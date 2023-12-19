@@ -154,4 +154,8 @@ public class ReservationServiceImpl implements IReservationService {
         long unaHoraEnMilisegundos = 3600000;
         return new Date(fecha.getTime() + unaHoraEnMilisegundos);
     }
+	 
+	 public Reservation getReservationByUserAndBook(Long userId, Long bookId) {
+	        return reservationsDAO.findByUserIdAndBookId(userId, bookId);
+	    }
 }

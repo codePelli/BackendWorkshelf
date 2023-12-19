@@ -26,6 +26,7 @@ public interface IReservationService {
     Page<Reservation> getPaginatedReservation(Pageable pageable);
 
 	Page<Reservation> getReservesByUser(User user, Pageable pageable);
-
+	
+	Reservation getReservationByUserAndBook(Long userId, Long bookId);
 
 }

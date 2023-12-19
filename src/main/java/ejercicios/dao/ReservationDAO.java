@@ -19,6 +19,8 @@ public interface ReservationDAO extends JpaRepository<Reservation,Long>{
 	
 	Reservation findById(int id);
 	
+	Reservation findByUserIdAndBookId(Long userId, Long bookId);
+	
 	List<Reservation>findByBookId(Long book);
 	
 	<T> Page<T> findAllByUser(User user, Pageable pageable);

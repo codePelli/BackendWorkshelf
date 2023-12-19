@@ -158,4 +158,20 @@ public class ReservationController {
 			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 		}
 	}
+    
+    @GetMapping("/reserveByUserAndBook/{bookId}")
+    public ResponseEntity<Reservation> getReservationByUserAndBook(@PathVariable Long bookId) {
+        
+        // Obtiene el usuario del token
+        User currentUser = getUserToken();
+        
+        // Obtiene la reserva por usuario y libro
+        Reservation reservation = reservationService.getReservationByUserAndBook(currentUser.getUserId(), bookId);
+        
+        if (reservation != null) {
+            return new ResponseEntity<>(reservation, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
 }

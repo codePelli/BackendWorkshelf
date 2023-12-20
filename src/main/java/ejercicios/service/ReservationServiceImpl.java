@@ -99,22 +99,20 @@ public class ReservationServiceImpl implements IReservationService {
 			Date reservationStart = getCurrentDateTime();
 			Date returnDate = addDays(reservationStart, reservationDays);
 			
-			book.setReserved(ReservationStatus.RESERVED.getCode());
-			
 			reservation.setRequestDate(reservationStart);
-			reservation.setReturnDate(returnDate);
-			reservation.setUser(user);
-			reservation.setBook(book);
-			
-			//List<Reservation> reservations = book.getReservations();
-			//reservations.add(reservation);
-			//book.setReservations(reservations);
-
+	        reservation.setReturnDate(returnDate);
+	        reservation.setUser(user);
+	        reservation.setBook(book);
+	        
+	        List<Reservation> reservations = book.getReservations();
+	        reservations.add(reservation);
+	        book.setReservations(reservations);
+	        book.setReserved(ReservationStatus.RESERVED.getCode());
 			
 			bookServiceImpl.updateBook(book);
 
 			
-			return saveReservation(reservation);
+			return reservation;
 		 }
 		 return null;
 	 }

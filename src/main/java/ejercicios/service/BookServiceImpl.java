@@ -62,5 +62,11 @@ public class BookServiceImpl implements IBookService{
     public Page<Book> getBooksByGenre(List<String> genres, Pageable pageable) {
         return bookDAO.findByGenreIn(genres, pageable);
     }
+    
+    public Page<Book> searchBooksByTitle(String title, Pageable pageable) {
+        return bookDAO.findByTitleContainingIgnoreCase(title, pageable);
+    }
+    
+    
 
 }

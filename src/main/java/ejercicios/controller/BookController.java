@@ -95,6 +95,20 @@ public class BookController {
 		return bookService.bookPerName(title);
 	}
 	
+    @GetMapping("/searchByTitle")
+    public ResponseEntity<List<Book>> searchBooksByTitle(@RequestParam(name = "title") String title,
+            @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
+
+        Page<Book> bookPage = bookService.searchBooksByTitle(title, PageRequest.of(page, size));
+        List<Book> books = bookPage.getContent().stream().collect(Collectors.toList());
+
+        if (books.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } else {
+            return new ResponseEntity<>(books, HttpStatus.OK);
+        }
+    }
+    
 	//FOR EVERYONE USE
 	// GET /book/paginated?page=1&size=1
 	@GetMapping("/paginated")

@@ -57,6 +57,7 @@ public class LibrarySecurityConfig {
             "/book/paginated",
             "/book/byTitlePaginated",
             "/book/byGenres/**",
+            "/book/searchByTitle",
             "/editorial/all",
             "/editorial/detail/**",
             "/editorial/byName/**",

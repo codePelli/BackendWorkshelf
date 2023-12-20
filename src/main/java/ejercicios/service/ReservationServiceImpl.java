@@ -104,7 +104,7 @@ public class ReservationServiceImpl implements IReservationService {
 	        reservation.setUser(user);
 	        reservation.setBook(book);
 	        
-	        List<Reservation> reservations = book.getReservations();
+	        List<Reservation> reservations = getReservesByBook(book);
 	        reservations.add(reservation);
 	        book.setReservations(reservations);
 	        book.setReserved(ReservationStatus.RESERVED.getCode());

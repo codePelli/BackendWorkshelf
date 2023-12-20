@@ -25,7 +25,6 @@ public class UserServiceImpl implements IUserService{
 	
 	@Override
 	public List<User> getUsers() {
-		// TODO Auto-generated method stub
 		return userDAO.findAll();
 	}
 	
@@ -37,13 +36,11 @@ public class UserServiceImpl implements IUserService{
             throw new UserAlreadyExistsException("A user with " +user.getEmail() +" already exists");
         }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-		// TODO Auto-generated method stub
 		return userDAO.save(user);
 	}
 	
 	@Override
 	public User userPerId(Long userId) {
-		// TODO Auto-generated method stub
 		return userDAO.findById(userId).get();
 	}
 
@@ -72,7 +69,6 @@ public class UserServiceImpl implements IUserService{
 
 	@Override
 	public Page<User> getPaginatedProyectos(Pageable pageable) {
-		// TODO Auto-generated method stub
 		return userDAO.findAll(pageable);
 	}
 

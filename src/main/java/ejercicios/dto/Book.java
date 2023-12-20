@@ -1,6 +1,15 @@
 package ejercicios.dto;
 
+import java.util.ArrayList;
 import java.util.Date;
+
+/*
+ * RESERVED 0 = AVAILABLE
+ * RESERVED 1 = RESERVED
+ * RESERVED 2 = LOST
+ * RESERVED 3 = NOT AVAILABLE
+ */
+
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -29,13 +38,12 @@ public class Book {
 	private String title;
 	private String image;
 	private String author;
-	private String bookingStatus;
+	private String genre;
 	private int reserved;
-	private Date reservationDate;
-	private Date reservationDuration;
+	private int reservationDuration;
 
 	@ManyToOne
-	@JsonIgnoreProperties("book")
+	@JsonIgnoreProperties("books")
 	@JoinColumn(name = "ownerId")
 	private User user;
 	
@@ -46,21 +54,30 @@ public class Book {
 	
 	@JsonIgnore
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<Reservation> reservations;
+	private List<Reservation> reservations = new ArrayList<>();
 
 
-	public Book(Long id, String title, String image, String author, String bookingStatus, int reserved, Date reservationDate,
-			Date reservationDuration, User user, Editorial editorial) {
+	public Book(Long id, String title, String image, String author, String genre, int reserved,
+			int reservationDuration, User user, Editorial editorial) {
 		this.id = id;
 		this.title = title;
 		this.image = image;
 		this.author = author;
-		this.bookingStatus = bookingStatus;
+		this.genre = genre;
 		this.reserved = reserved;
-		this.reservationDate = reservationDate;
 		this.reservationDuration = reservationDuration;
 		this.user = user;
 		this.editorial = editorial;
+	}
+
+
+	public String getGenre() {
+		return genre;
+	}
+
+
+	public void setGenre(String genre) {
+		this.genre = genre;
 	}
 
 
@@ -109,16 +126,6 @@ public class Book {
 	}
 
 
-	public String getBookingStatus() {
-		return bookingStatus;
-	}
-
-
-	public void setBookingStatus(String bookingStatus) {
-		this.bookingStatus = bookingStatus;
-	}
-
-
 	public int getReserved() {
 		return reserved;
 	}
@@ -129,22 +136,12 @@ public class Book {
 	}
 
 
-	public Date getReservationDate() {
-		return reservationDate;
-	}
-
-
-	public void setReservationDate(Date reservationDate) {
-		this.reservationDate = reservationDate;
-	}
-
-
-	public Date getReservationDuration() {
+	public int getReservationDuration() {
 		return reservationDuration;
 	}
 
 
-	public void setReservationDuration(Date reservationDuration) {
+	public void setReservationDuration(int reservationDuration) {
 		this.reservationDuration = reservationDuration;
 	}
 

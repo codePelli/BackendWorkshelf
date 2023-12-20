@@ -39,13 +39,11 @@ public class Reservation {
 
 	
 	@JsonIgnore
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "reservation", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "reservation", cascade = CascadeType.ALL)
 	private List<Rating> ratings;
 
 	public Reservation() {
 	}
-
-
 
 	public Reservation(Long id, Date requestDate, Date returnDate, User user, Book book) {
 		this.id = id;
@@ -54,8 +52,6 @@ public class Reservation {
 		this.user = user;
 		this.book = book;
 	}
-
-
 
 	public Long getId() {
 		return id;
@@ -122,6 +118,17 @@ public class Reservation {
 		return "Reservation [id=" + id + ", requestDate=" + requestDate + ", returnDate=" + returnDate + ", user="
 				+ user + ", book=" + book + "]";
 	}
+	
+	public List<Rating> getRatings() {
+		return ratings;
+	}
+
+
+
+	public void setRatings(List<Rating> ratings) {
+		this.ratings = ratings;
+	}
+
 
 	
 }

@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import ejercicios.dto.Book;
+import ejercicios.dto.User;
 
 public interface IBookService {
 	
@@ -22,6 +23,8 @@ public interface IBookService {
 	public Book bookPerName(String name);
 	
     Page<Book> getPaginatedBook(Pageable pageable);
+    
+	Page<Book> getBookByUserId(User user, Pageable pageable);
 
 
 }

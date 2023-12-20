@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import ejercicios.dto.Reservation;
+import ejercicios.dto.User;
 
 public interface IReservationService {
 	
@@ -24,5 +25,8 @@ public interface IReservationService {
 	
     Page<Reservation> getPaginatedReservation(Pageable pageable);
 
+	Page<Reservation> getReservesByUser(User user, Pageable pageable);
+	
+	Reservation getReservationByUserAndBook(Long userId, Long bookId);
 
 }

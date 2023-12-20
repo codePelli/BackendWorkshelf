@@ -46,7 +46,7 @@ public class EditorialController {
 	@PostMapping("/add")
 	public Editorial insertEditorial(@RequestBody Editorial editorial) {
 		
-		return editorialService.updateEditorial(editorial);
+		return editorialService.saveEditorial(editorial);
 	}
 	
 	//FOR REGISTERED USE
@@ -54,10 +54,11 @@ public class EditorialController {
 	public Editorial updateEditorial(@PathVariable(name = "id") Long id, @RequestBody Editorial editorial) {
 		
 		Editorial editorialSelected = new Editorial();
+		editorialSelected =  editorialService.editorialPerId(id);
 		
 		editorialSelected.setEditorialName(editorial.getEditorialName());
 		
-		return editorialSelected;
+		return editorialService.updateEditorial(editorialSelected);
 	}
 	
 	//FOR ADMIN USE

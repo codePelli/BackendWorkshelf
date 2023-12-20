@@ -36,10 +36,13 @@ public class LibrarySecurityConfig {
 	private LibraryUserDetailsService userDetailsService;
 
     private static final String[] ADMIN_URL = {
-    		"books/delete/**",
-    		"editorial/delete/**",
-    		"rating/delete/**",
-    		"reservation/delete/**",
+    		"/book/delete/**",
+    		"/editorial/update/**",
+    		"/editorial/delete/**",
+    		"/rating/delete/**",
+    		"/reservation/all",
+    		"/reservation/delete/**",
+    		"/reservation/paginated/**",
             "/role",
             "/role/**",
             "/user/all",
@@ -48,11 +51,13 @@ public class LibrarySecurityConfig {
             };
 
     private static final String[] UN_SECURED_URLs = {
-            "/books/all",
-            "/books/detail/**",
-            "/books/byTitle/**",
-            "/books/paginated",
-            "/books/byTitlePaginated",
+            "/book/all",
+            "/book/detail/**",
+            "/book/byTitle/**",
+            "/book/paginated",
+            "/book/byTitlePaginated",
+            "/book/byGenres/**",
+            "/book/searchByTitle",
             "/editorial/all",
             "/editorial/detail/**",
             "/editorial/byName/**",
@@ -68,7 +73,11 @@ public class LibrarySecurityConfig {
             "/login/**",
             "/swagger-ui",
             "/swagger-ui/**",
-
+            "/reservation/reserveByBookId/**",
+            "/rating/book/**",
+            "/reserveByUserId",
+            "/reservation/test",
+            "/reservation/reserveByBookIdNotPaginated/**"
     };
 
     @Bean
@@ -90,7 +99,6 @@ public class LibrarySecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                     .authorizeHttpRequests(auth -> auth.requestMatchers(UN_SECURED_URLs).permitAll())
-                    .authorizeHttpRequests(auth -> auth.requestMatchers("/swagger-ui/**","/doc.html").permitAll())
                     .authorizeHttpRequests(authz -> authz.requestMatchers(ADMIN_URL).hasAuthority("ADMIN").anyRequest().authenticated())
                     .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
@@ -107,7 +115,7 @@ public class LibrarySecurityConfig {
         configuration.addAllowedOrigin("*");  // Allow all origins or Arrays.asList("http://localhost:4200","http://localhost:3000")
         configuration.addAllowedMethod("*");      // Allow all methods or List.of("GET", "POST", "PUT", "DELETE")
         configuration.addAllowedHeader("*");      // Allow all headers
-        configuration.setAllowCredentials(true);  // Allow sending of authentication cookies
+        configuration.setAllowCredentials(false);  // Allow sending of authentication cookies
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;

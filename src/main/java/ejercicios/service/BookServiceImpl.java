@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import ejercicios.dao.IBookDAO;
 import ejercicios.dto.Book;
+import ejercicios.dto.User;
 
 @Service
 public class BookServiceImpl implements IBookService{
@@ -42,12 +43,30 @@ public class BookServiceImpl implements IBookService{
 
 	@Override
 	public Page<Book> getPaginatedBook(Pageable pageable) {
-		// TODO Auto-generated method stub
 		return bookDAO.findAll(pageable);
 	}
 	
 	public Page<Book> searchBookByTitle(String title, Pageable pageable) {
-		// TODO Auto-generated method stub
 		return bookDAO.findAllByTitleContainingIgnoreCase(title, pageable);
 	}
+	
+	@Override
+	public Page<Book> getBookByUserId(User user, Pageable pageable) {
+		return bookDAO.findAllByUser(user, pageable);
+	}
+	
+	public List<Book> getBookListByUserId(Long user) {
+		return bookDAO.findListByUserId(user);
+	}
+	
+    public Page<Book> getBooksByGenre(List<String> genres, Pageable pageable) {
+        return bookDAO.findByGenreIn(genres, pageable);
+    }
+    
+    public Page<Book> searchBooksByTitle(String title, Pageable pageable) {
+        return bookDAO.findByTitleContainingIgnoreCase(title, pageable);
+    }
+    
+    
+
 }

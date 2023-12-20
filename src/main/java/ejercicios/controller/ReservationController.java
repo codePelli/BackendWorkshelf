@@ -21,8 +21,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import ejercicios.dto.Book;
+import ejercicios.dto.Rating;
 import ejercicios.dto.Reservation;
 import ejercicios.dto.User;
+import ejercicios.service.BookServiceImpl;
 import ejercicios.service.ReservationServiceImpl;
 import ejercicios.service.UserServiceImpl;
 
@@ -34,12 +37,14 @@ public class ReservationController {
 	private ReservationServiceImpl reservationService;
 	
 	@Autowired
+	BookServiceImpl bookService;
+	
+	@Autowired
 	UserServiceImpl userSerice;
 		
 	//ONLY ADMIN USE
 	@GetMapping("/all")
 	public List<Reservation> getAllReservations(){
-		
 		return reservationService.getReservations();
 	}
 	
@@ -54,26 +59,25 @@ public class ReservationController {
 		}
 	}
 	
+	//@RequestBody Book book
 	//ONLY REGISTERED USER
-	@PostMapping("/add")
-	public Reservation insertReservation(@RequestBody Reservation Reservation) {
-		Reservation.setUser(getUserToken());
-		return reservationService.updateReservation(Reservation);
+	@PutMapping("/add")
+	public List<Reservation> insertReservation(@RequestBody Book book) {
+		List<Reservation> reservations = reservationService.addReservation(getUserToken(), book); 
+		return reservations;
 	}
 	
 	//ONLY REGISTERED USER
 	@PutMapping("/update/{id}")
-	public ResponseEntity<Reservation> updateReservation(@PathVariable(name = "id") Long id, @RequestBody Reservation Reservation) {
+	public ResponseEntity<Reservation> updateReservation(@PathVariable(name = "id") Long id, @RequestBody Reservation reservation) {
 		
 		if (getUserToken().getUserId().equals(reservationService.ReservationPerId(id).getUser().getUserId())) {
 			Reservation reservationSelected = new Reservation();
 			
 			reservationSelected= reservationService.ReservationPerId(id);
-			
-			reservationSelected.setRequestDate(Reservation.getRequestDate());
-			reservationSelected.setReturnDate(Reservation.getReturnDate());
-			reservationSelected.setUser(Reservation.getUser());
-			reservationSelected.setBook(Reservation.getBook());
+			reservationSelected.getBook().setReserved(0);
+			bookService.updateBook(reservationSelected.getBook());
+			reservationSelected.setBook(reservationSelected.getBook());
 			
 			reservationSelected = reservationService.updateReservation(reservationSelected);
 			
@@ -91,14 +95,6 @@ public class ReservationController {
 		reservationService.deleteReservation(id);
 	}
 	
-	/**
-	@GetMapping("/byReturnDate")
-    public List<Reservation> getByReturnDate(@RequestParam(name = "returnDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Date returnDate) {
-        
-		return reservationService.reservationsByReturnDate(returnDate);
-    }
-    **/
-	
 	//ONLY ADMIN USE
     //GET /api/proyectos/paginated?page=0&size=10
     @GetMapping("/paginated")
@@ -112,10 +108,78 @@ public class ReservationController {
         return new ResponseEntity<>(pageDTOs, HttpStatus.OK);
     }
     
+	@GetMapping("/reserveByBookId/{id}")
+	public ResponseEntity<List<Reservation>> listByBookId(
+			@PathVariable Long id,
+			@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
+
+		Page<Reservation> resvId = reservationService.getReservesByBookPaginated(bookService.bookPerId(id), PageRequest.of(page, size));
+		List<Reservation> pageId = resvId.getContent().stream().collect(Collectors.toList());
+
+		return new ResponseEntity<>(pageId, HttpStatus.OK);
+	}
+	
+	@GetMapping("/reserveByBookIdNotPaginated/{id}")
+	public ResponseEntity<List<Reservation>> listByBookIdNotPag(@PathVariable Long id) {
+		List<Reservation> resvId = reservationService.getReservesByBook(bookService.bookPerId(id));
+
+		return new ResponseEntity<>(resvId, HttpStatus.OK);
+	}
+	
+	@GetMapping("/reserveByUserId")
+	public ResponseEntity<List<Reservation>> reserveByUser(
+			@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
+
+		Page<Reservation> resvId = reservationService.getReservesByUserId(getUserToken(), PageRequest.of(page, size));
+		List<Reservation> pageId = resvId.getContent().stream().collect(Collectors.toList());
+
+		return new ResponseEntity<>(pageId, HttpStatus.OK);
+	}
+    
     public User getUserToken() {
     	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username = ((UserDetails)auth.getPrincipal()).getUsername();
         User user = userSerice.getUser(username);
         return user;
+    }
+    
+    @GetMapping("/user-owned-books")
+	public ResponseEntity<List<Reservation>> getAllMyBooksReservations(
+			@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
+
+		Page<Reservation> resvId = reservationService.getMyBooksReservations(getUserToken(), PageRequest.of(page, size));
+		List<Reservation> pageId = resvId.getContent().stream().collect(Collectors.toList());
+
+		return new ResponseEntity<>(pageId, HttpStatus.OK);
+	}
+    
+    
+    @PutMapping("/book/return")
+	public ResponseEntity<Reservation> processBookReturn(@RequestBody Book book) {
+    	Reservation reservation = reservationService.getLastBookReservationByUser(getUserToken(), book);
+
+    	if (getUserToken().getUserId().equals(reservation.getUser().getUserId())) {
+    		reservationService.processBookReturn(reservation);
+			return new ResponseEntity<>(reservation, HttpStatus.OK);
+		}
+		else {
+			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+		}
+	}
+    
+    @GetMapping("/reserveByUserAndBook/{bookId}")
+    public ResponseEntity<Reservation> getReservationByUserAndBook(@PathVariable Long bookId) {
+        
+        // Obtiene el usuario del token
+        User currentUser = getUserToken();
+        
+        // Obtiene la reserva por usuario y libro
+        Reservation reservation = reservationService.getReservationByUserAndBook(currentUser.getUserId(), bookId);
+        
+        if (reservation != null) {
+            return new ResponseEntity<>(reservation, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 }

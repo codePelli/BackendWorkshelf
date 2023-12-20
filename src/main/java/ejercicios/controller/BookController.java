@@ -65,11 +65,11 @@ public class BookController {
 
 			bookSelected.setTitle(book.getTitle());
 			bookSelected.setAuthor(book.getAuthor());
-			bookSelected.setBookingStatus(book.getBookingStatus());
+			bookSelected.setGenre(book.getGenre());
 			bookSelected.setReserved(book.getReserved());
-			bookSelected.setReservationDate(book.getReservationDate());
 			bookSelected.setReservationDuration(book.getReservationDuration());
-			bookSelected.setUser(getUserToken());
+			//EXPLICAR
+			//bookSelected.setUser(getUserToken());
 			bookSelected.setEditorial(book.getEditorial());
 
 			bookSelected = bookService.updateBook(bookSelected);
@@ -95,6 +95,20 @@ public class BookController {
 		return bookService.bookPerName(title);
 	}
 	
+    @GetMapping("/searchByTitle")
+    public ResponseEntity<List<Book>> searchBooksByTitle(@RequestParam(name = "title") String title,
+            @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
+
+        Page<Book> bookPage = bookService.searchBooksByTitle(title, PageRequest.of(page, size));
+        List<Book> books = bookPage.getContent().stream().collect(Collectors.toList());
+
+        if (books.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } else {
+            return new ResponseEntity<>(books, HttpStatus.OK);
+        }
+    }
+    
 	//FOR EVERYONE USE
 	// GET /book/paginated?page=1&size=1
 	@GetMapping("/paginated")
@@ -117,6 +131,30 @@ public class BookController {
 		List<Book> bookDTOs = bookPage.getContent().stream().collect(Collectors.toList());
 
 		return new ResponseEntity<>(bookDTOs, HttpStatus.OK);
+	}
+	
+	@GetMapping("/bookByUserId")
+	public ResponseEntity<List<Book>> listByUserId(
+			@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
+
+		Page<Book> resvId = bookService.getBookByUserId(getUserToken(), PageRequest.of(page, size));
+		List<Book> pageId = resvId.getContent().stream().collect(Collectors.toList());
+
+		return new ResponseEntity<>(pageId, HttpStatus.OK);
+	}
+	
+	@GetMapping("/byGenres")
+	public ResponseEntity<List<Book>> listByGenre(@RequestParam(name = "genres") List<String> genres,
+			@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
+		
+		Page<Book> bookPage = bookService.getBooksByGenre(genres, PageRequest.of(page, size));
+		List<Book> booksByGenre = bookPage.getContent().stream().collect(Collectors.toList());
+
+	    if (booksByGenre.isEmpty()) {
+	        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+	    } else {
+	        return new ResponseEntity<>(booksByGenre, HttpStatus.OK);
+	    }
 	}
 	
 	public User getUserToken() {

@@ -5,10 +5,6 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -19,20 +15,25 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
-/**
- * @author Samson Effes
- */
 @Service
-@AllArgsConstructor
-@NoArgsConstructor
 public class JWTService {
-	
-	@Autowired
+
     @Value("${spring.jwt.secret}")
     private  String JWT_SECRET;
 
     @Value("${spring.jwt.jwtExpirationInMs}")
     private int JWT_EXPIRATION_TIME_IN_MILLISECONDS;
+    
+    
+    public JWTService() {
+        // Constructor sin argumentos
+    }
+
+    public JWTService(String JWT_SECRET, int JWT_EXPIRATION_TIME_IN_MILLISECONDS) {
+        this.JWT_SECRET = JWT_SECRET;
+        this.JWT_EXPIRATION_TIME_IN_MILLISECONDS = JWT_EXPIRATION_TIME_IN_MILLISECONDS;
+    }
+    
 
     public String generateToken(String userName){
         Map<String, Object> claims = new HashMap<>();

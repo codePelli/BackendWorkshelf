@@ -1,11 +1,7 @@
 package ejercicios.jwt;
 
 
-import jakarta.servlet.FilterChain;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import lombok.RequiredArgsConstructor;
+import java.io.IOException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -16,19 +12,17 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import ejercicios.security.LibraryUserDetailsService;
-
-import java.io.IOException;
-
-/**
- * @author Samson Effes
- */
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 @Component
-@RequiredArgsConstructor
 public class JWTAuthenticationFilter extends OncePerRequestFilter {
-	
+
 	@Autowired
     private JWTService jwtService;
+	
 	@Autowired
     private LibraryUserDetailsService libraryUserDetailsService;
 
@@ -42,8 +36,6 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
         if (authHeader != null && authHeader.startsWith("Bearer ")){
             token = authHeader.substring(7);
             userName = jwtService.extractUsernameFromToken(token);
-            System.out.println(authHeader);
-            System.out.println(token);
         }
         if (userName != null & SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = libraryUserDetailsService.loadUserByUsername(userName);

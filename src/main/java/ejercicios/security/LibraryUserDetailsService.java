@@ -7,17 +7,15 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
-import ejercicios.user.UserRepository;
+import ejercicios.dao.UserDAO;
 
-/**
- * @author Jose Marin
- */
+
 
 @Component
 public class LibraryUserDetailsService implements UserDetailsService {
 
     @Autowired
-    private UserRepository userRepository;
+    private UserDAO userRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

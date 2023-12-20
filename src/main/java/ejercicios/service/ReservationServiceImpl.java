@@ -92,27 +92,32 @@ public class ReservationServiceImpl implements IReservationService {
         return new PageImpl<>(allReservations, pageable, allReservations.size());
     }
 	 
-	 public Reservation addReservation(User user, Book book) {
+	 public List<Reservation> addReservation(User user, Book book) {
 		 if(book.getReserved() == ReservationStatus.AVAILABLE.getCode()) {
 			Reservation reservation = new Reservation();
 			Integer reservationDays = book.getReservationDuration();
 			Date reservationStart = getCurrentDateTime();
 			Date returnDate = addDays(reservationStart, reservationDays);
 			
+			book.setReserved(ReservationStatus.RESERVED.getCode());
+			
 			reservation.setRequestDate(reservationStart);
 	        reservation.setReturnDate(returnDate);
 	        reservation.setUser(user);
 	        reservation.setBook(book);
 	        
-	        List<Reservation> reservations = book.getReservations();
+	        List<Reservation> reservations = getReservesByBook(book);
 	        reservations.add(reservation);
+	        reservation.setBook(book);
 	        book.setReservations(reservations);
-	        book.setReserved(ReservationStatus.RESERVED.getCode());
+			
+			//List<Reservation> reservations = book.getReservations();
+			//reservations.add(reservation);
+			//book.setReservations(reservations);
 			
 			bookServiceImpl.updateBook(book);
 
-			
-			return reservation;
+			return book.getReservations();
 		 }
 		 return null;
 	 }

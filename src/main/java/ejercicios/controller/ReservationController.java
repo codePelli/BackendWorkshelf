@@ -61,9 +61,10 @@ public class ReservationController {
 	
 	//@RequestBody Book book
 	//ONLY REGISTERED USER
-	@PostMapping("/add")
-	public Reservation insertReservation(@RequestBody Book book) {
-		return reservationService.addReservation(getUserToken(), book);
+	@PutMapping("/add")
+	public List<Reservation> insertReservation(@RequestBody Book book) {
+		List<Reservation> reservations = reservationService.addReservation(getUserToken(), book); 
+		return reservations;
 	}
 	
 	//ONLY REGISTERED USER
